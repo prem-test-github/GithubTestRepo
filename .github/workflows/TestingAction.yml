@@ -78,9 +78,9 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - shell: bash
-        run: |
-          echo "${{ toJSON(github) }}"
+      #- shell: bash
+      #  run: |
+      #    echo "${{ toJSON(github) }}"
       - uses: actions/checkout@v3
       - uses: ./.github/actions/CliqInformer
         with:
@@ -111,7 +111,7 @@ jobs:
           #pull-request-target-message: 'A (event) is (action) at (repo) under (ref)'
           #pull-request-review-message: 'You have got a Review Dude :curious:\n A (event) is (action) at (repo) under (ref)'
           #pull-request-review-comment-message: 'You have got a Review Comment Dude :curious:\n A (event) is (action) at (repo) under (ref)'
-          #push-message: 'A (event) is made into (repo) under (ref).\n Good to see you make some Changes :new-year:'
+          push-message: 'A (event) is made into (repo) under (ref).\n Good to see you make some Changes :new-year:'
           #registry-package-message: ':gift-box: A Build is (action) at (repo)'
           #release-message: ':target: (ref) has been (action) Successfully'
           #repository-dispatch-message: ':report: A (event) has triggered this following workflow: (workflow)'

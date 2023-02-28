@@ -199,6 +199,7 @@ runs:
             echo "message=${{inputs.push-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'registry_package' }}
           then
+            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.event.actor , '_+_' , github.event.registry_package.name , '_+_' , github.event.registry_package.package_version.name , '_+_' , github.event.registry_package.package_type , '_+_' , github.event.registry_package.package_version.html_url ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.registry-package-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'release' }}
           then
