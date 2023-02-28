@@ -31,9 +31,10 @@ public class CliqInformer {
 		try {
 			String message;
 			String CustomMessage;
-			String Button_Label;
-			String Button_URL;
-			String CliqChannelLink = args[0];		  
+			String Button_Label = new String();
+			String Button_URL = new String();
+			boolean containsButton = false;
+			String CliqChannelLink = args[0];
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
 			  INVALID_ENDPOINT_ERROR = false;
 			CustomMessage = args[1];
@@ -68,6 +69,7 @@ public class CliqInformer {
 				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")";
 				Button_Label = "View Comparison";
 				Button_URL = Compare_URL;
+				containsButton = true;
 			}
 			ArrayList<String> messages = new ArrayList<String>();
 			for(int i = 0 ; i < message.length() ;)
@@ -102,10 +104,13 @@ public class CliqInformer {
 			  }
 			  messages.add(split_message);
 			}
+			String Button_References = new String();
+			if(containsButton)
+				Button_References = ",\n\"references\":\n{\n\"1\": \n{\n\"type\": \"button\",\n\"object\": \n{\n\"label\": \"" + Button_Label +"\",\n\"action\": \n{\n\"type\": \"open.url\",\n\n\"data\": \n{\n\"url\": \"" + Button_URL + "\"\n}\n},\n\"type\": \"+\"\n}}}";
 			for(String msg : messages)
 			{
 			  msg = msg.replace("\"","'");
-			  String TextParams = "{\n\"text\":\"" + msg + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"\n\"references\":\n{\n\"1\": \n{\n\"type\": \"button\",\n\"object\": \n{\n\"label\": \"" + Button_Label +"\",\n\"action\": \n{\n\"type\": \"open.url\",\n\n\"data\": \n{\n\"url\": \"" + Button_URL + "\"\n}\n},\n\"type\": \"+\"\n}}}}";
+			  String TextParams = "{\n\"text\":\"" + msg + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"}" + Button_References + "}";
 			  connection = (HttpURLConnection) new URL(CliqChannelLink).openConnection();
 			  connection.setRequestMethod("POST");
 			  connection.setRequestProperty("Content-Type","application/json");
