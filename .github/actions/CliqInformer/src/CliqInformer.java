@@ -177,7 +177,7 @@ public class CliqInformer {
 			else if(GITHUB_ERROR)
 			  ERROR_MESSAGE = "Environmental Variable GITHUB_OUTPUT missing";
 			else if(MESSAGE_SEND_FAILURE_ERROR)
-			  ERROR_MESSAGE = splitMessage(ERROR_MESSAGE);
+			  ERROR_MESSAGE = ERROR_MESSAGE;
 			else if(status == 204)
 			  ERROR_MESSAGE = "CliqInformer executed Successfully";
 			writeGithubOutput(status,ERROR_MESSAGE);
