@@ -113,7 +113,6 @@ runs:
         id: action-finder
         shell: bash
         run: |
-          echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action) }}" >> $GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
             echo "message=${{inputs.branch-protection-rule-message}}" >> $GITHUB_ENV
@@ -196,7 +195,7 @@ runs:
             echo "message=${{inputs.pull-request-target-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}' , env.ADDONINFO , '_+_' , github.event.pusher.name , '_+_' , github.ref_name , '_+_' , github.event.head_commit.url , '_+_' , github.event.compare ) }}" >> $GITHUB_ENV
+            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}' , github.repository , '_+_' , github.event_name , '_+_' , github_event.action , '_+_' , github.event.pusher.name , '_+_' , github.ref_name , '_+_' , github.event.head_commit.url , '_+_' , github.event.compare ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.push-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'registry_package' }}
           then
