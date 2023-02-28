@@ -203,6 +203,7 @@ runs:
             echo "message=${{inputs.registry-package-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'release' }}
           then
+            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.actor ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.release-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'repository_dispatch' }}
           then

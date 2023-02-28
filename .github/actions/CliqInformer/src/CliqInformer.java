@@ -80,7 +80,34 @@ public class CliqInformer {
 					String RegistryPackageURL = AddedInfo[7];
 					if(Action.equals("published"))
 					{
-						message = "[" + Publisher + "](" + ServerURL + Publisher + ") has published a new " + RegistryPackageType + "registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
+						message = "[" + Publisher + "](" + ServerURL + Publisher + ") has published a new " + RegistryPackageType + " registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
+					}
+				}
+				else if(Event.equals("Release"))
+				{
+					if(Action.equals("published"))
+					{
+						message = "$username has published a new release";
+					}
+					else if(Action.equals("created"))
+					{
+						message = "$username has created a new release";
+					}
+					else if(Action.equals("prereleased"))
+					{
+						message = "$username has moved $release-name to the prerelease stage";
+					}
+					else if(Action.equals("released"))
+					{
+						message = "$username has released $release-name";
+					}
+					else if(Action.equals("edited"))
+					{
+						message = "$username has edited and made changes to the release";
+					}
+					else if(Action.equals("deleted"))
+					{
+						message = "$username has deleted a release";
 					}
 				}
 			}
