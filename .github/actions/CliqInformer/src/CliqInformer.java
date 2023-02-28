@@ -71,7 +71,7 @@ public class CliqInformer {
 				{
 					String Publisher = AddedInfo[3];
 					String RegistryPackageName = AddedInfo[4];
-					String RegistryPackageType = AddedInfo[5]
+					String RegistryPackageType = AddedInfo[5];
 					String RegistryPackageVersion = AddedInfo[6];
 					String RegistryPackageURL = AddedInfo[7];
 					if(Action.equals("published"))
