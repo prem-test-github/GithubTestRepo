@@ -76,7 +76,7 @@ public class CliqInformer {
 					String RegistryPackageURL = AddedInfo[7];
 					if(Action.equals("published"))
 					{
-						message = "[" + Publisher + "](" Publisher ") has published a new " + RegistryPackageType + "registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
+						message = "[" + Publisher + "](" + Publisher + ") has published a new " + RegistryPackageType + "registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
 					}
 				}
 			}
