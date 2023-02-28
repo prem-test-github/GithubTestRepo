@@ -78,8 +78,7 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - shell: bash
-        if: {{ github.event_name != 'push' }}
+      - if: {{ github.event_name != 'push' }}
         run: |
           echo "${{ toJSON(github) }}"
       - uses: actions/checkout@v3
