@@ -31,7 +31,6 @@ public class CliqInformer {
 		try {
 			String message;
 			String CustomMessage;
-			boolean containsButton = false;
 			String CliqChannelLink = args[0];
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
 			  INVALID_ENDPOINT_ERROR = false;
@@ -64,10 +63,7 @@ public class CliqInformer {
 				String Branch_Name = AddedInfo[4];
 				String Commit_URL = AddedInfo[5];
 				String Compare_URL = AddedInfo[6];
-				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")[View Comparison]($1)";
-				Button_Label = "View Comparison";
-				Button_URL = Compare_URL;
-				containsButton = true;
+				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ") [View Comparison](" + Compare_URL + ")";
 			}
 			ArrayList<String> messages = new ArrayList<String>();
 			for(int i = 0 ; i < message.length() ;)
