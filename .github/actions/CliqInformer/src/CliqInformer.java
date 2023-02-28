@@ -55,10 +55,10 @@ public class CliqInformer {
 			if(Action.equals(""))
         		Action = "made";
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
-			//message = CustomMessage;
-			message = new String();
+			message = CustomMessage;
 			if(CustomMessage.equals(""))
 			{
+				message = new String();
 				if(Event.equals("Push"))
 				{
 					String Pusher = AddedInfo[3];
