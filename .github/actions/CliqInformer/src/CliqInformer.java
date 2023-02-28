@@ -36,8 +36,6 @@ public class CliqInformer {
 			  INVALID_ENDPOINT_ERROR = false;
 			CustomMessage = args[1];
 			String[] AddedInfo = args[2].split("_\\+_");
-			for(String s : AddedInfo)
-				System.out.println(s);
 			String Repository = AddedInfo[0];
 			String Event = AddedInfo[1];
 			String[] EventWords = Event.split("_");
@@ -59,7 +57,7 @@ public class CliqInformer {
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			//message = CustomMessage;
 			message = new String();
-			if(Event == "Push")
+			if(Event.equals("Push"))
 			{
 				String Pusher = AddedInfo[3];
 				String Branch_Name = AddedInfo[4];
@@ -112,6 +110,7 @@ public class CliqInformer {
 			  os.write(TextParams.getBytes());
 			  os.flush();
 			  os.close();
+			  System.out.println(TextParams);
 			  status = connection.getResponseCode();
 			  if(status > 299) {
 				  BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
