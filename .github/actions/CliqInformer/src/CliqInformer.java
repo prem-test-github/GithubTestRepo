@@ -66,7 +66,7 @@ public class CliqInformer {
 				String Branch_Name = AddedInfo[4];
 				String Commit_URL = AddedInfo[5];
 				String Compare_URL = AddedInfo[6];
-				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")";
+				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")[View Comparison]($1)";
 				Button_Label = "View Comparison";
 				Button_URL = Compare_URL;
 				containsButton = true;
@@ -106,7 +106,7 @@ public class CliqInformer {
 			}
 			String Button_References = new String();
 			if(containsButton)
-				Button_References = ",\n\"references\":\n{\n\"1\": \n{\n\"type\": \"button\",\n\"object\": \n{\n\"label\": \"" + Button_Label +"\",\n\"action\": \n{\n\"type\": \"open.url\",\n\n\"data\": \n{\n\"url\": \"" + Button_URL + "\"\n}\n},\n\"type\": \"+\"\n}}}";
+				Button_References = ",\n\"references\":\n{\n\"1\": \n{\n\"type\": \"button\",\n\"object\": \n{\n\"label\": \"" + Button_Label +"\",\n\"action\": \n{\n\"type\": \"open.url\",\n\n\"data\": \n{\n\"web\": \"" + Button_URL + "\"\n}\n},\n\"type\": \"+\"\n}}}";
 			for(String msg : messages)
 			{
 			  msg = msg.replace("\"","'");
