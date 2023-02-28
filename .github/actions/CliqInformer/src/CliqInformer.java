@@ -31,8 +31,6 @@ public class CliqInformer {
 		try {
 			String message;
 			String CustomMessage;
-			String Button_Label = new String();
-			String Button_URL = new String();
 			boolean containsButton = false;
 			String CliqChannelLink = args[0];
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
@@ -104,13 +102,10 @@ public class CliqInformer {
 			  }
 			  messages.add(split_message);
 			}
-			String Button_References = new String();
-			if(containsButton)
-				Button_References = ",\n\"references\":\n{\n\"1\": \n{\n\"type\": \"button\",\n\"object\": \n{\n\"label\": \"" + Button_Label +"\",\n\"action\": \n{\n\"type\": \"open.url\",\n\n\"data\": \n{\n\"web\": \"" + Button_URL + "\"\n}\n},\n\"type\": \"+\"\n}}}";
 			for(String msg : messages)
 			{
 			  msg = msg.replace("\"","'");
-			  String TextParams = "{\n\"text\":\"" + msg + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"}" + Button_References + "}";
+			  String TextParams = "{\n\"text\":\"" + msg + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"}}";
 			  connection = (HttpURLConnection) new URL(CliqChannelLink).openConnection();
 			  connection.setRequestMethod("POST");
 			  connection.setRequestProperty("Content-Type","application/json");
