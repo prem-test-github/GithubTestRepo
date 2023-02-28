@@ -64,8 +64,8 @@ public class CliqInformer {
 				String Commit_URL = AddedInfo[5];
 				String Compare_URL = AddedInfo[6];
 				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")";
-				Button_Label = "View Comparison";
-				Button_URL = Compare_URL;
+				String Button_Label = "View Comparison";
+				String Button_URL = Compare_URL;
 			}
 			ArrayList<String> messages = new ArrayList<String>();
 			for(int i = 0 ; i < message.length() ;)
