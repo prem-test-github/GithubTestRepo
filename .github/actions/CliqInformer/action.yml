@@ -113,11 +113,7 @@ runs:
         id: action-finder
         shell: bash
         run: |
-          SEP='_+_'
-          echo "$SEP"
-          echo "{{$SEP}}"
-          echo "{{SEP}}"
-          echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}' , github.repository , "$SEP" , github.event_name , "$SEP" , github.event.action) }}" >> $GITHUB_ENV
+          echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action) }}" >> $GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
             echo "message=${{inputs.branch-protection-rule-message}}" >> $GITHUB_ENV
@@ -200,7 +196,7 @@ runs:
             echo "message=${{inputs.pull-request-target-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}' , env.ADDONINFO , "$SEP" , github.event.pusher.name , "$SEP" , github.event.compare ) }}" >> $GITHUB_ENV
+            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}' , env.ADDONINFO , '_+_' , github.event.pusher.name , '_+_' , github.event.compare ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.push-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'registry_package' }}
           then
