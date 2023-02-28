@@ -37,7 +37,9 @@ public class CliqInformer {
 			CustomMessage = args[1];
 			String[] AddedInfo = args[2].split("_\\+_");
 			String Repository = AddedInfo[0];
+			String RepositoryURL = "https://github.com/" + Repository ;
 			String Event = AddedInfo[1];
+			String Actor = AddedInfo[3];
 			String[] EventWords = Event.split("_");
 			Event = new String();
 			for(String s: EventWords)
@@ -71,14 +73,21 @@ public class CliqInformer {
 				{
 					String Publisher = AddedInfo[3];
 					String RegistryPackageName = AddedInfo[4];
-					String RegistryPackageType = AddedInfo[5];
-					String RegistryPackageVersion = AddedInfo[6];
+					String RegistryPackageVersion = AddedInfo[5];
+					String RegistryPackageType = AddedInfo[6];
 					String RegistryPackageURL = AddedInfo[7];
 					if(Action.equals("published"))
 					{
-						message = "[" + Publisher + "](" + Publisher + ") has published a new " + RegistryPackageType + "registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
+						message = "[" + Publisher + "](https://github.com/" + Publisher + ") has published a new " + RegistryPackageType + "registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
 					}
 				}
+			}
+			else
+			{
+				message = message.replace("(me)","[" + Actor + "](" + ActorURL + ")");
+				message = message.replace("(repo)","[" + Repository + "](" + RepositoryURL + ")" );
+				message = message.replace("(event)","*" + Event + "*");
+				message = message.replace("(action)",Action);
 			}
 			ArrayList<String> messages = new ArrayList<String>();
 			for(int i = 0 ; i < message.length() ;)
