@@ -31,15 +31,17 @@ public class CliqInformer {
 		try {
 			String message;
 			String CustomMessage;
+			String ServerURL = "https://github.com/";
 			String CliqChannelLink = args[0];
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
 			  INVALID_ENDPOINT_ERROR = false;
 			CustomMessage = args[1];
 			String[] AddedInfo = args[2].split("_\\+_");
 			String Repository = AddedInfo[0];
-			String RepositoryURL = "https://github.com/" + Repository ;
+			String RepositoryURL = ServerURL + Repository ;
 			String Event = AddedInfo[1];
 			String Actor = AddedInfo[3];
+			String ActorURL = ServerURL + Actor;
 			String[] EventWords = Event.split("_");
 			Event = new String();
 			for(String s: EventWords)
@@ -67,7 +69,7 @@ public class CliqInformer {
 					String Branch_Name = AddedInfo[4];
 					String Commit_URL = AddedInfo[5];
 					String Compare_URL = AddedInfo[6];
-					message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")\\n[View Comparison](" + Compare_URL + ")";
+					message ="[" + Pusher + "](" + ServerURL + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](" + ServerURL + Repository + "/tree/" + Branch_Name + ")\\n[View Comparison](" + Compare_URL + ")";
 				}
 				else if(Event.equals("Registry Package"))
 				{
@@ -78,7 +80,7 @@ public class CliqInformer {
 					String RegistryPackageURL = AddedInfo[7];
 					if(Action.equals("published"))
 					{
-						message = "[" + Publisher + "](https://github.com/" + Publisher + ") has published a new " + RegistryPackageType + "registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
+						message = "[" + Publisher + "](" + ServerURL + Publisher + ") has published a new " + RegistryPackageType + "registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
 					}
 				}
 			}
