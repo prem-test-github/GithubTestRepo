@@ -239,7 +239,7 @@ runs:
         run: |
           JAVA=$JAVA_HOME_19_X64/bin/java
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
-          if ${{ env.message != '' || {{env.message == '' && inputs.set-message-if-none}} }}
+          if ${{ env.message != '' || ${{ env.message == '' && inputs.set-message-if-none }} }}
           then
             $JAVA $CONNECTOR ${{inputs.channel-endpoint}} "${{ env.message }}" "${{ env.ADDONINFO }}"
           fi
