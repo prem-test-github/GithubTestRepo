@@ -63,7 +63,9 @@ public class CliqInformer {
 				String Branch_Name = AddedInfo[4];
 				String Commit_URL = AddedInfo[5];
 				String Compare_URL = AddedInfo[6];
-				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")[View Comparison]($1)";
+				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")";
+				Button_Label = "View Comparison";
+				Button_URL = Compare_URL;
 			}
 			ArrayList<String> messages = new ArrayList<String>();
 			for(int i = 0 ; i < message.length() ;)
@@ -101,7 +103,7 @@ public class CliqInformer {
 			for(String msg : messages)
 			{
 			  msg = msg.replace("\"","'");
-			  String TextParams = "{\n\"text\":\"" + msg + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"\n\"references\":\n{\n\"1\": \n{\n\"type\": \"button\",\n\"object\": \n{\n\"label\": \"" + Button_Name +"\",\n\"action\": \n{\n\"type\": \"open.url\",\n\n\"data\": \n{\n\"url\": \"" + ButtonURL + "\"\n}\n},\n\"type\": \"+\"\n}}}}";
+			  String TextParams = "{\n\"text\":\"" + msg + "\",\n\"bot\":\n{\n\"name\":\"CliqInformer\",\n\"image\":\"" + CliqInformerURL + "\"\n\"references\":\n{\n\"1\": \n{\n\"type\": \"button\",\n\"object\": \n{\n\"label\": \"" + Button_Label +"\",\n\"action\": \n{\n\"type\": \"open.url\",\n\n\"data\": \n{\n\"url\": \"" + Button_Label + "\"\n}\n},\n\"type\": \"+\"\n}}}}";
 			  connection = (HttpURLConnection) new URL(CliqChannelLink).openConnection();
 			  connection.setRequestMethod("POST");
 			  connection.setRequestProperty("Content-Type","application/json");
