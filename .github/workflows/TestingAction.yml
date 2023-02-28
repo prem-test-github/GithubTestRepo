@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./actions/CliqInformer
+      - uses: .github/actions/CliqInformer
         with:
           channel-endpoint: ${{ secrets.ENDPOINT }}
           #branch-protection-rule-message: 'Security Update ​:Security:\n (event) is (action) by (me) at (repo) under (ref)'
