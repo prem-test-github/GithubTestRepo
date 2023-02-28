@@ -57,13 +57,23 @@ public class CliqInformer {
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			//message = CustomMessage;
 			message = new String();
-			if(Event.equals("Push"))
+			if(CustomMessage.equals(""))
 			{
-				String Pusher = AddedInfo[3];
-				String Branch_Name = AddedInfo[4];
-				String Commit_URL = AddedInfo[5];
-				String Compare_URL = AddedInfo[6];
-				message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")\\n[View Comparison](" + Compare_URL + ")";
+				if(Event.equals("Push"))
+				{
+					String Pusher = AddedInfo[3];
+					String Branch_Name = AddedInfo[4];
+					String Commit_URL = AddedInfo[5];
+					String Compare_URL = AddedInfo[6];
+					message ="[" + Pusher + "](https://github.com/" + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](https://github.com/" + Repository + "/tree/" + Branch_Name + ")\\n[View Comparison](" + Compare_URL + ")";
+				}
+				else if(Event.equals("Registry Package"))
+				{
+					if(Action.equals("published"))
+					{
+						message = "$username has published a new registry package";
+					}
+				}
 			}
 			ArrayList<String> messages = new ArrayList<String>();
 			for(int i = 0 ; i < message.length() ;)
