@@ -31,7 +31,7 @@ public class CliqInformer {
 		try {
 			String message;
 			String CustomMessage;
-			String ServerURL = "https://github.com/";
+			String ServerURL = "https://www.github.com/";
 			String CliqChannelLink = args[0];
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
 			  INVALID_ENDPOINT_ERROR = false;
@@ -63,12 +63,18 @@ public class CliqInformer {
 			if(CustomMessage.equals(""))
 			{
 				message = new String();
+				if(Event.equals("Create"))
+				{
+					String Creator = AddedInfo[3];
+					message = "[" + Creator + "](" + ServerURL + Creator + ") has created a new branch - $branch-name";
+				}
 				if(Event.equals("Push"))
 				{
 					String Pusher = AddedInfo[3];
 					String Branch_Name = AddedInfo[4];
 					String Commit_URL = AddedInfo[5];
 					String Compare_URL = AddedInfo[6];
+					String Commit_Message = AddedInfo[7];
 					message ="[" + Pusher + "](" + ServerURL + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](" + ServerURL + Repository + "/tree/" + Branch_Name + ")\\n[View Comparison](" + Compare_URL + ")";
 				}
 				else if(Event.equals("Registry Package"))
@@ -78,6 +84,8 @@ public class CliqInformer {
 					String RegistryPackageVersion = AddedInfo[5];
 					String RegistryPackageType = AddedInfo[6];
 					String RegistryPackageURL = AddedInfo[7];
+					String RegistryPackageBody = AddedInfo[8];
+					String RegistryPackageDescription = AddedInfo[9];
 					if(Action.equals("published"))
 					{
 						message = "[" + Publisher + "](" + ServerURL + Publisher + ") has published a new " + RegistryPackageType + " registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
@@ -85,30 +93,63 @@ public class CliqInformer {
 				}
 				else if(Event.equals("Release"))
 				{
+					String Releaser = AddedInfo[3];
+					String ReleaseName = AddedInfo[4];
+					String ReleaseTagName = AddedInfo[5];
+					String ReleaseURL = AddedInfo[6];
+					String ReleaseBody = AddedInfo[7];
 					if(Action.equals("published"))
 					{
-						message = "$username has published a new release";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has published a new release - [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 					else if(Action.equals("created"))
 					{
-						message = "$username has created a new release";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has created a new release - [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 					else if(Action.equals("prereleased"))
 					{
-						message = "$username has moved $release-name to the prerelease stage";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has moved [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ") to the prerelease stage";
 					}
 					else if(Action.equals("released"))
 					{
-						message = "$username has released $release-name";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has released [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 					else if(Action.equals("edited"))
 					{
-						message = "$username has edited and made changes to the release";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has edited and made changes to the release [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 					else if(Action.equals("deleted"))
 					{
-						message = "$username has deleted a release";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has deleted a release [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
+				}
+				else if(Event.equals("Repository Dispatch"))
+				{
+					String Trigger_Actor = AddedInfo[3];
+					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has triggered a new repository dispatch - $name"
+				}
+				else if(Event.equals("Schedule"))
+				{
+					String Trigger_Actor = AddedInfo[3];
+					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has scheduled a workflow trigger - $name"
+				}
+				else if(Event.equals("Status"))
+				{
+					String Trigger_Actor = AddedInfo[3];
+					message = "The status of the $workflow-name workflow has been updated as $status";
+				}
+				else if(Event.equals("Watch"))
+				{
+					String Trigger_Actor = AddedInfo[3];
+					message = "[" + Trigger_Actor + "](" ServerURL + Trigger_Actor + ") has pushed the [" + Repository + "](" + RepositoryURL + ") repository under the Watch category"
+				}
+				else if(Event.equals("Workflow Dispatch"))
+				{
+					String Trigger_Actor = AddedInfo[3];
+					String Workflow = AddedInfo[4];
+					String WorkflowID = AddedInfo[5];
+					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
+					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has triggered the [" + Workflow + "](" + WorkflowURL  + ") workflow"; 
 				}
 			}
 			else
