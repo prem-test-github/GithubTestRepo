@@ -100,27 +100,27 @@ public class CliqInformer {
 					String ReleaseBody = AddedInfo[7];
 					if(Action.equals("published"))
 					{
-						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has published a new release - [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has published a new release - [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 					else if(Action.equals("created"))
 					{
-						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has created a new release - [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has created a new release - [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 					else if(Action.equals("prereleased"))
 					{
-						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has moved [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ") to the prerelease stage";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has moved [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ") to the prerelease stage";
 					}
 					else if(Action.equals("released"))
 					{
-						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has released [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has released [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 					else if(Action.equals("edited"))
 					{
-						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has edited and made changes to the release [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has edited and made changes to the release [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 					else if(Action.equals("deleted"))
 					{
-						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has deleted a release [" + Release Name + " " + ReleaseTagName + "](" + ReleaseURL + ")";
+						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has deleted a release [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
 				}
 				else if(Event.equals("Repository Dispatch"))
