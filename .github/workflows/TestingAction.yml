@@ -80,7 +80,7 @@ jobs:
     steps:
       - if: ${{ github.event_name != 'push' && github.event_name != 'registry_package'}}
         run: |
-          echo "${{ toJSON(github) }}"
+          echo "${{ toJSON(github.event) }}"
       - uses: actions/checkout@v3
       - uses: ./.github/actions/CliqInformer
         with:
