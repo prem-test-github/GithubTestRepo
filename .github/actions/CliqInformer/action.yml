@@ -205,7 +205,7 @@ runs:
             echo "message=${{inputs.registry-package-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'release' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.release.name , '_+_' , github.event.release.tag_name , '_+_' , github.event.release.html_url  }}" >> $GITHUB_ENV
+            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.release.name , '_+_' , github.event.release.tag_name , '_+_' , github.event.release.html_url ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.release-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'repository_dispatch' }}
           then
