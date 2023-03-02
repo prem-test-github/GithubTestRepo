@@ -149,7 +149,7 @@ public class CliqInformer {
 					String Trigger_Actor = AddedInfo[3];
 					String Workflow = AddedInfo[4];
 					String WorkflowID = AddedInfo[5];
-					String Status = Workflow
+					String Status = Workflow;
 					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
 					message = "The status of the [" + Workflow + "](" + WorkflowURL + ") workflow has been updated as " + Status;
 				{
