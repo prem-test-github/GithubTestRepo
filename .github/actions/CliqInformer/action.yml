@@ -233,7 +233,7 @@ runs:
           then
             echo "RELEASE_NAME=${{ github.event.release.name }}" >> $GITHUB_ENV
             echo "RELEASE_TAG=${{ github.event.release.tag_name}}" >> $GITHUB_ENV
-            echo "RELEASE_HTML"github.event.release.html_url }}" >> $GITHUB_ENV
+            echo "RELEASE_HTMLgithub.event.release.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.release-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'repository_dispatch' }}
           then
@@ -243,7 +243,7 @@ runs:
             echo "message=${{inputs.schedule-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'status' }}
           then
-            echo "STATUS=github.event.state }}" >> $GITHUB_ENV
+            echo "STATUS=${{ github.event.state }}" >> $GITHUB_ENV
             echo "message=${{inputs.status-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'watch' }}
           then
