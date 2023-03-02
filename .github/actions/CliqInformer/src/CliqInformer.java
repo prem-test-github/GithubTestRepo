@@ -152,9 +152,10 @@ public class CliqInformer {
 					String Status = Workflow;
 					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
 					message = "The status of the [" + Workflow + "](" + WorkflowURL + ") workflow has been updated as " + Status;
+				else if(Event.equals("Watch"))
 				{
 					String Watcher = AddedInfo[3];
-					message = "[" + Watcher + "](" ServerURL + Watcher + ") has pushed the [" + Repository + "](" + RepositoryURL + ") repository under the Watch category"
+					message = "[" + Watcher + "](" ServerURL + Watcher + ") has pushed the [" + Repository + "](" + RepositoryURL + ") repository under the Watch category";
 				}
 				else if(Event.equals("Workflow Dispatch"))
 				{
