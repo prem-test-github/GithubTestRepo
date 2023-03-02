@@ -15,6 +15,7 @@ import static java.nio.file.StandardOpenOption.WRITE;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 public class CliqInformer {
 	public static void main(String args[]) {
