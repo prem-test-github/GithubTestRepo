@@ -462,11 +462,7 @@ public class CliqInformer {
 	{
 		System.out.println(System.getenv("ADDONINFO"));
 		Map env = System.getenv();
-		for(Object key : env.keySet())
-		{
-			String sey = (String)key;
-			System.out.println(key + env.get("key"));
-		}
+		env.forEach((key, value) -> System.out.println(key + " : " + value));
 	  var githubOutput = System.getenv("GITHUB_OUTPUT");
     var file = Path.of(githubOutput);
 	  var lines = ("message-status=" + Status).lines().toList();
