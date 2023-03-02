@@ -99,8 +99,8 @@ public class CliqInformer {
 				}
 				else if(Event.equals("Check Suite"))
 				{
-					String CheckSuiter = AddedInfo[4];
-					message = "The check suite created by [" + CheckName + "](" + ChecksURL + ") has been completed";
+					String CheckSuiter = AddedInfo[3];
+					message = "The check suite created by [" + CheckSuiter + "](" + ServerURL + CheckSuiter + ") has been completed";
 				}
 				else if(Event.equals("Create"))
 				{
@@ -369,6 +369,7 @@ public class CliqInformer {
 	// used to write a Github Output so that the Shell Runner can Read
 	public static void writeGithubOutput(Integer Status , String ErrorMessage) throws IOException
 	{
+		System.out.println(System.getenv("GITHUB"));
 	  var githubOutput = System.getenv("GITHUB_OUTPUT");
     var file = Path.of(githubOutput);
 	  var lines = ("message-status=" + Status).lines().toList();
