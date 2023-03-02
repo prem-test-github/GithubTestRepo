@@ -75,7 +75,7 @@ public class CliqInformer {
 					String Deletor = AddedInfo[3];
 					String Ref = AddedInfo[4];
 					String RefType = AddedInfo[5];
-					message = "[" + Creator + "](" + ServerURL + Creator + ") has deleted the " + RefType + " - " + Ref;
+					message = "[" + Deletor + "](" + ServerURL + Deletor + ") has deleted the " + RefType + " - " + Ref;
 				}
 				if(Event.equals("Push"))
 				{
