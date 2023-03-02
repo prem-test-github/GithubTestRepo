@@ -78,7 +78,7 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ github.event_name != 'push' }}
+      - if: ${{ github.event_name != 'push' && github.event_name != 'registry_package'}}
         run: |
           echo "${{ toJSON(github) }}"
       - uses: actions/checkout@v3

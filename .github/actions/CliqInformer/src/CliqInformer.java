@@ -66,16 +66,25 @@ public class CliqInformer {
 				if(Event.equals("Create"))
 				{
 					String Creator = AddedInfo[3];
-					message = "[" + Creator + "](" + ServerURL + Creator + ") has created a new branch - $branch-name";
+					String Ref = AddedInfo[4];
+					String RefType = AddedInfo[5];
+ 					message = "[" + Creator + "](" + ServerURL + Creator + ") has created a new " + RefType + " - " + Ref;
+				}
+				else if(Event.equals("Delete"))
+				{
+					String Deletor = AddedInfo[3];
+					String Ref = AddedInfo[4];
+					String RefType = AddedInfo[5];
+					message = "[" + Creator + "](" + ServerURL + Creator + ") has deleted the " + RefType + " - " + Ref;
 				}
 				if(Event.equals("Push"))
 				{
 					String Pusher = AddedInfo[3];
 					String Branch_Name = AddedInfo[4];
-					String Commit_URL = AddedInfo[5];
-					String Compare_URL = AddedInfo[6];
-					String Commit_Message = AddedInfo[7];
-					message ="[" + Pusher + "](" + ServerURL + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the branch [" + Branch_Name + "](" + ServerURL + Repository + "/tree/" + Branch_Name + ")\\n[View Comparison](" + Compare_URL + ")";
+					String Branch_Type = AddedInfo[5];
+					String Commit_URL = AddedInfo[6];
+					String Compare_URL = AddedInfo[7];
+					message ="[" + Pusher + "](" + ServerURL + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the " + Branch_Type + " [" + Branch_Name + "](" + ServerURL + Repository + "/tree/" + Branch_Name + ")\\n[View Comparison](" + Compare_URL + ")";
 				}
 				else if(Event.equals("Registry Package"))
 				{
@@ -84,8 +93,6 @@ public class CliqInformer {
 					String RegistryPackageVersion = AddedInfo[5];
 					String RegistryPackageType = AddedInfo[6];
 					String RegistryPackageURL = AddedInfo[7];
-					String RegistryPackageBody = AddedInfo[8];
-					String RegistryPackageDescription = AddedInfo[9];
 					if(Action.equals("published"))
 					{
 						message = "[" + Publisher + "](" + ServerURL + Publisher + ") has published a new " + RegistryPackageType + " registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
@@ -97,7 +104,6 @@ public class CliqInformer {
 					String ReleaseName = AddedInfo[4];
 					String ReleaseTagName = AddedInfo[5];
 					String ReleaseURL = AddedInfo[6];
-					String ReleaseBody = AddedInfo[7];
 					if(Action.equals("published"))
 					{
 						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has published a new release - [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
@@ -126,30 +132,37 @@ public class CliqInformer {
 				else if(Event.equals("Repository Dispatch"))
 				{
 					String Trigger_Actor = AddedInfo[3];
-					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has triggered a new repository dispatch - $name"
+					String WorkflowID = AddedInfo[4];
+					String WorkflowURL = ServerURL + Repository + "/actions/runs/" + WorkflowID;
+					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has triggered a new repository dispatch - [" + Action + "](" + WorkflowURL + ")";
 				}
 				else if(Event.equals("Schedule"))
 				{
 					String Trigger_Actor = AddedInfo[3];
-					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has scheduled a workflow trigger - $name"
+					String Workflow = AddedInfo[4]
+					String WorkflowID = AddedInfo[5];
+					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
+					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has scheduled a workflow [" + Workflow + "](" + WorkflowURL  + ")";
 				}
 				else if(Event.equals("Status"))
 				{
 					String Trigger_Actor = AddedInfo[3];
-					message = "The status of the $workflow-name workflow has been updated as $status";
-				}
-				else if(Event.equals("Watch"))
+					String Workflow = AddedInfo[4];
+					String WorkflowID = AddedInfo[5];
+					String Status = Workflow
+					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
+					message = "The status of the [" + Workflow + "](" + WorkflowURL + ") workflow has been updated as " + Status;
 				{
-					String Trigger_Actor = AddedInfo[3];
-					message = "[" + Trigger_Actor + "](" ServerURL + Trigger_Actor + ") has pushed the [" + Repository + "](" + RepositoryURL + ") repository under the Watch category"
+					String Watcher = AddedInfo[3];
+					message = "[" + Watcher + "](" ServerURL + Watcher + ") has pushed the [" + Repository + "](" + RepositoryURL + ") repository under the Watch category"
 				}
 				else if(Event.equals("Workflow Dispatch"))
 				{
-					String Trigger_Actor = AddedInfo[3];
+					String Dispatcher = AddedInfo[3];
 					String Workflow = AddedInfo[4];
 					String WorkflowID = AddedInfo[5];
 					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
-					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has triggered the [" + Workflow + "](" + WorkflowURL  + ") workflow"; 
+					message = "[" + Dispatcher + "](" + ServerURL + Dispatcher + ") has triggered the [" + Workflow + "](" + WorkflowURL  + ") workflow"; 
 				}
 			}
 			else
