@@ -63,12 +63,51 @@ public class CliqInformer {
 			if(CustomMessage.equals(""))
 			{
 				message = new String();
-				if(Event.equals("Create"))
+				if(Event.equals("Branch Protection Rule"))
+				{
+					String Branch_Manager = AddedInfo[3];
+					String Rule = AddedInfo[4];
+					String RuleID = AddedInfo[5];
+					String Token = AddedInfo[6];
+					if(Action.equals("created"))
+					{
+						message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has created a new branch protection rule - [" + Rule + "](" + ServerURL + Repository + "/settings/branch_protection_rules/" + RuleID + ")";
+					}
+					else if(Action.equals("deleted"))
+					{
+						message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has deleted an existing branch protection rule";
+					}
+					else if(Action.equals("edited"))
+					{
+						message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has edited an existing branch protection rule - [" + Rule + "](" + ServerURL + Repository + "/settings/branch_protection_rules/" + RuleID + ")";
+					}
+					message = message + Token;
+				}
+				else if(Event.equals("Check Run"))
+				{
+					String Checker = AddedInfo[3];
+					String CheckName = AddedInfo[4];
+					String ChecksURL = AddedInfo[5];
+					if(Action.equals("created"))
+					{
+						message = "[" + Checker + "](" + ServerURL + Checker + ") has created a new check run - [" + CheckName + "](" + ChecksURL + ")";
+					}
+					else if(Action.equals("completed"))
+					{
+						message = "The check run [" + CheckName + "](" + ChecksURL + ") created by [" + Checker + "](" + ServerURL + Checker + ") has been completed";
+					}
+				}
+				else if(Event.equals("Check Suite"))
+				{
+					String CheckSuiter = AddedInfo[4];
+					message = "The check suite created by [" + CheckName + "](" + ChecksURL + ") has been completed";
+				}
+				else if(Event.equals("Create"))
 				{
 					String Creator = AddedInfo[3];
 					String Ref = AddedInfo[4];
 					String RefType = AddedInfo[5];
- 					message = "[" + Creator + "](" + ServerURL + Creator + ") has created a new " + RefType + " - " + Ref;
+ 					message = "[" + Creator + "](" + ServerURL + Creator + ") has created a new " + RefType + " - [" + Ref + "](" + ServerURL + Repository + "/tree/" + Ref + ")";
 				}
 				else if(Event.equals("Delete"))
 				{
