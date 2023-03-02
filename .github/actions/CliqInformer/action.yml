@@ -196,7 +196,7 @@ runs:
             echo "message=${{inputs.pull-request-target-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.event.pusher.name , '_+_' , github.ref_name , '_+_' , github.event.head_commit.url , '_+_' , github.event.compare , '_+_' , ${github.event.head_commit.message//\n/\\n} ) }}" >> $GITHUB_ENV
+            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.event.pusher.name , '_+_' , github.ref_name , '_+_' , github.event.head_commit.url , '_+_' , github.event.compare ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.push-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'registry_package' }}
           then
