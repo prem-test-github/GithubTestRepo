@@ -149,7 +149,7 @@ public class CliqInformer {
 					}
 					else if(Action.equals("edited"))
 					{
-						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has edited the discussion - [" + Discussion + "](" + DiscussionURL + "]";
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has edited the discussion - [" + Discussion + "](" + DiscussionURL + ")";
 					}
 					else if(Action.equals("pinned"))
 					{
@@ -157,7 +157,7 @@ public class CliqInformer {
 					}
 					else if(Action.equals("unpinned"))
 					{
-						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has unpinned the discussion - [" + Discussion + "](" + DiscussionURL + "]";
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has unpinned the discussion - [" + Discussion + "](" + DiscussionURL + ")";
 					}
 					else if(Action.equals("labelled"))
 					{
@@ -171,11 +171,11 @@ public class CliqInformer {
 					}
 					else if(Action.equals("locked"))
 					{
-						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has locked the discussion - [" + Discussion + "](" + DiscussionURL + "]";
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has locked the discussion - [" + Discussion + "](" + DiscussionURL + ")";
 					}
 					else if(Action.equals("unlocked"))
 					{
-						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has unlocked the discussion - [" + Discussion + "](" + DiscussionURL + "]";
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has unlocked the discussion - [" + Discussion + "](" + DiscussionURL + ")";
 					}
 					else if(Action.equals("transferred"))
 					{
@@ -185,11 +185,11 @@ public class CliqInformer {
 					}
 					else if(Action.equals("answered"))
 					{
-						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has added an answer to the discussion - [" + Discussion + "](" + DiscussionURL + "]";
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has added an answer to the discussion - [" + Discussion + "](" + DiscussionURL + ")";
 					}
 					else if(Action.equals("unanswered"))
 					{
-						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has unmarked an answer from the discussion - [" + Discussion + "](" + DiscussionURL + "]";
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has unmarked an answer from the discussion - [" + Discussion + "](" + DiscussionURL + ")";
 					}
 					else if(Action.equals("category changed"))
 					{
@@ -459,7 +459,9 @@ public class CliqInformer {
 	// used to write a Github Output so that the Shell Runner can Read
 	public static void writeGithubOutput(Integer Status , String ErrorMessage) throws IOException
 	{
-		System.out.println(System.getenv("GITHUB_ENV"));
+		Map env = System.getenv();
+		for(String key : env.keySet)
+			System.out.println(key + env.get("key"));
 	  var githubOutput = System.getenv("GITHUB_OUTPUT");
     var file = Path.of(githubOutput);
 	  var lines = ("message-status=" + Status).lines().toList();
