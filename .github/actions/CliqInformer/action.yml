@@ -112,40 +112,54 @@ runs:
       - name: Setting Message Content
         id: action-finder
         shell: bash
-        env:
-          GITHUB_CONTEXT: ${{toJSON(github)}}
         run: |
+          echo "CLIQ_CHANNEL_LINK=${{ inputs.channel-endpoint }}" >> GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.rule.name , '_+_' , github.event.rule.id ) }}" >> $GITHUB_ENV
-            echo "message=${{inputs.branch-protection-rule-message}}" >> $GITHUB_ENV
+            echo "BRANCH_RULE=${{ github.event.rule.name }}" >> $GITHUB_ENV
+            echo "BRANCH_RULE_ID=${{ github.event.rule.id }}" >> $GITHUB_ENV
+            echo "message=${{ inputs.branch-protection-rule-message }}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'check_run' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.check_run.name , '_+_' , github.event.check_run.html_url ) }}" >> $GITHUB_ENV
+            echo "CHECK_RUN_NAME=${{ github.event.check_run.name }}" >> $GITHUB_ENV
+            echo "CHECK_RUN_URL=${{ github.event.check_run.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.check-run-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'check_suite' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.check-suite-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'create' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.ref , '_+_' , github.event.ref_type) }}" >> $GITHUB_ENV
-            echo "message=${{inputs.create-message}}" >> $GITHUB_ENV
+            echo "BRANCH_NAME=${{ github.event.ref }}" >> $GITHUB_ENV
+            echo "BRANCH_TYPE=${{ github.event.ref_type }}" >> $GITHUB_ENV
+            echo "message=${{ inputs.create-message }}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'delete' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.ref , '_+_' , github.event.ref_type) }}" >> $GITHUB_ENV
+            echo "BRANCH_NAME=${{ github.event.ref }}" >> $GITHUB_ENV
+            echo "BRANCH_TYPE=${{ github.event.ref_type }}" >> $GITHUB_ENV
             echo "message=${{inputs.delete-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.deployment.url ) }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_URL=${{ github.event.deployment.url }}" >> $GITHUB_ENV
             echo "message=${{inputs.deployment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment_status' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.deployment_status.url , '_+_' , github.event.deployment_status.state ) }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_URL=${{ github.event.deployment_status.url }} >> $GITHUB_ENV
+            echo "STATUS=${{ github.event.deployment_status.state }}" >> $GITHUB_ENV
             echo "message=${{inputs.deployment-status-message}}" >> $GITHUB_ENV
           elif ${{github.event_name == 'discussion' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.discussion.title , '_+_' , github.event.discussion.html_url ) }}" >> $GITHUB_ENV
+            echo "DISCUSSION=${{ github.event.discussion.title }} >> $GITHUB_ENV 
+            echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
+            if ${{ github.event.action == 'labelled' || github.event.action == 'unlabelled' }}
+            then
+              echo "LABEL_NAME={{ github.event.label.name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'transferred' }}
+            then
+              echo "NEW_REPOSITORY=${{ github.event.new_repository.full_name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'category_changed' }}
+            then
+              echo "CATEGORY_NAME=${{ github.event.discussion.category.name }}" >> $GITHUB_ENV;
+            fi
             echo "message=${{inputs.discussion-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'discussion_comment' }}
           then
@@ -205,35 +219,37 @@ runs:
             echo "message=${{inputs.pull-request-target-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.event.pusher.name , '_+_' , github.ref_name , '_+_' , github.ref_type , '_+_' , github.event.head_commit.url , '_+_' , github.event.compare ) }}" >> $GITHUB_ENV
+            echo "COMMIT_URL=${{ github.event.head_commit.url }}" >> $GITHUB_ENV
+            echo "COMPARE_URL=${{ github.event.compare  }}" >> $GITHUB_ENV
             echo "message=${{inputs.push-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'registry_package' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.registry_package.name , '_+_' , github.event.registry_package.package_version.name , '_+_' , github.event.registry_package.package_type , '_+_' , github.event.registry_package.package_version.html_url ) }}" >> $GITHUB_ENV
+            echo "REGISTRY_PACKAGE_NAME=${{ github.event.registry_package.name }}" >> $GITHUB_ENV
+            echo "REGISTRY_PACKAGE_VERSION=${{ github.event.registry_package.package_version.name }}" >> $GITHUB_ENV
+            echo "REGISTRY_PACKAGE_TYPE=${{github.event.registry_package.package_type }}" >> $GITHUB_ENV
+            echo "REGISTRY_PACKAGE_URL=${{github.event.registry_package.package_html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.registry-package-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'release' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.event.release.name , '_+_' , github.event.release.tag_name , '_+_' , github.event.release.html_url ) }}" >> $GITHUB_ENV
+            echo "RELEASE_NAME=${{ github.event.release.name }}" >> $GITHUB_ENV
+            echo "RELEASE_TAG=${{ github.event.release.tag_name}}" >> $GITHUB_ENV
+            echo "RELEASE_HTML"github.event.release.html_url ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.release-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'repository_dispatch' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.run_id ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.repository-dispatch-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'schedule' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.workflow , '_+_' , github.run_id ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.schedule-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'status' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.workflow , '_+_' , github.run_id ) }}" >> $GITHUB_ENV
+            echo "STATUS=github.event.state ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.status-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'watch' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.watch-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'workflow_dispatch' }}
           then
-            echo "ADDONINFO=${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}' , github.repository , '_+_' , github.event_name , '_+_' , github.event.action , '_+_' , github.triggering_actor , '_+_' , github.workflow , '_+_' , github.run_id ) }}" >> $GITHUB_ENV
             echo "message=${{inputs.workflow-dispatch-message}}" >> $GITHUB_ENV
           fi
       - name: "Setting Message"
@@ -249,19 +265,6 @@ runs:
               MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
               echo "message=$MESSAGE" >> $GITHUB_ENV
             fi
-            if ${{github.event_name == 'discussion'}}
-            then
-              if ${{ github.event.action == 'labelled' || github.event.action == 'unlabelled' }}
-              then
-                echo "ADDONINFO=${{ format('{0}{1}{2}', env.ADDONINFO , '_+_' , github.event.label.name)}}" >> $GITHUB_ENV
-              elif ${{ github.event.action == 'transferred' }}
-              then
-                echo "ADDONINFO=${{ format('{0}{1}{2}', env.ADDONINFO , '_+_' , github.event.new_repository.full_name)}}" >> $GITHUB_ENV
-              elif ${{ github.event.action == 'category_changed' }}
-              then
-                echo "ADDONINFO=${{ format('{0}{1}{2}', env.ADDONINFO , '_+_' , github.event.discussion.category.name )}}" >> $GITHUB_ENV;
-              fi
-            fi
           fi
       - name: "Running the Cliq Integration"
         id: send-message
@@ -271,10 +274,10 @@ runs:
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
           if ${{ env.message != '' }}
           then
-            $JAVA $CONNECTOR ${{inputs.channel-endpoint}} "${{ env.message }}" "${{ env.ADDONINFO }}"
+            $JAVA $CONNECTOR
           elif ${{ env.message == '' && inputs.set-message-if-none }}
           then
-            $JAVA $CONNECTOR ${{inputs.channel-endpoint}} "${{ env.message }}" "${{ env.ADDONINFO }}"
+            $JAVA $CONNECTOR
           fi
       - name: "Displaying Output"
         id: display-output

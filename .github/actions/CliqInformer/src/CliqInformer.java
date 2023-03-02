@@ -33,23 +33,22 @@ public class CliqInformer {
 			String message;
 			String CustomMessage;
 			String ServerURL = "https://www.github.com/";
-			String CliqChannelLink = args[0];
+			String CliqChannelLink = System.getenv("CLIQ_CHANNEL_LINK");
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
 			  INVALID_ENDPOINT_ERROR = false;
-			CustomMessage = args[1];
-			String[] AddedInfo = args[2].split("_\\+_");
-			String Repository = AddedInfo[0];
-			String RepositoryURL = ServerURL + Repository ;
-			String Event = AddedInfo[1];
-			String Actor = AddedInfo[3];
+			CustomMessage = System.getenv("CUSTOM_MESSAGE");
+			String Actor = System.getenv("GITHUB_ACTOR");
 			String ActorURL = ServerURL + Actor;
+			String Event = System.getenv("GITHUB_EVENT_NAME");
 			String[] EventWords = Event.split("_");
-			Event = new String();
+			String[] AddedInfo = args[2].split("_\\+_");
+			String Repository = System.getenv("REPOSITORY");
+			String RepositoryURL = ServerURL + Repository;
 			for(String s: EventWords)
 			  Event += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
 			Event = Event.trim();
-			String Action = AddedInfo[2];
-			if(!Action.equals(""))
+			String Action = System.getenv("GITHUB_ACTION");
+			if(!Action.equals("__self"))
 			{
 			  String[] ActionWords = Action.split("_");
 			  Action = new String();
@@ -57,8 +56,10 @@ public class CliqInformer {
 			    Action += s + " ";
 			  Action = Action.trim();
 			}
-			if(Action.equals(""))
-        		Action = "made";
+			else
+			{
+				Action = "made";
+			}
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			message = CustomMessage;
 			if(CustomMessage.equals(""))
@@ -66,9 +67,9 @@ public class CliqInformer {
 				message = new String();
 				if(Event.equals("Branch Protection Rule"))
 				{
-					String Branch_Manager = AddedInfo[3];
-					String Rule = AddedInfo[4];
-					String RuleID = AddedInfo[5];
+					String Branch_Manager = System.getenv("GITHUB_ACTOR");
+					String Rule = System.getenv("BRANCH_RULE");
+					String RuleID = System.getenv("BRANCH_RULE_ID");
 					if(Action.equals("created"))
 					{
 						message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has created a new branch protection rule - [" + Rule + "](" + RepositoryURL + "/settings/branch_protection_rules/" + RuleID + ")";
@@ -81,13 +82,13 @@ public class CliqInformer {
 					{
 						message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has edited an existing branch protection rule - [" + Rule + "](" + RepositoryURL + "/settings/branch_protection_rules/" + RuleID + ")";
 					}
-					message = message + " " + RepositoryURL;
+					message = message + " \n" + RepositoryURL;
 				}
 				else if(Event.equals("Check Run"))
 				{
-					String Checker = AddedInfo[3];
-					String CheckName = AddedInfo[4];
-					String ChecksURL = AddedInfo[5];
+					String Checker = System.getenv("GITHUB_ACTOR");
+					String CheckName = System.getenv("CHECK_RUN_NAME");
+					String ChecksURL = System.getenv("CHECK_RUN_URL");
 					if(Action.equals("created"))
 					{
 						message = "[" + Checker + "](" + ServerURL + Checker + ") has created a new check run - [" + CheckName + "](" + ChecksURL + ")";
@@ -96,50 +97,50 @@ public class CliqInformer {
 					{
 						message = "The check run [" + CheckName + "](" + ChecksURL + ") created by [" + Checker + "](" + ServerURL + Checker + ") has been completed";
 					}
-					message = message + " " + ChecksURL;
+					message = message + " \n" + ChecksURL;
 				}
 				else if(Event.equals("Check Suite"))
 				{
-					String CheckSuiter = AddedInfo[3];
+					String CheckSuiter = System.getenv("GITHUB_ACTOR");
 					message = "The check suite created by [" + CheckSuiter + "](" + ServerURL + CheckSuiter + ") has been completed";
-					message = message + " " + RepositoryURL;
+					message = message + " \n" + RepositoryURL;
 				}
 				else if(Event.equals("Create"))
 				{
-					String Creator = AddedInfo[3];
-					String Ref = AddedInfo[4];
-					String RefType = AddedInfo[5];
+					String Creator = System.getenv("GITHUB_ACTOR");
+					String Ref = System.getenv("BRANCH_NAME");
+					String RefType = System.getenv("BRANCH_TYPE");
  					message = "[" + Creator + "](" + ServerURL + Creator + ") has created a new " + RefType + " - [" + Ref + "](" + ServerURL + Repository + "/tree/" + Ref + ")";
- 					message = message + " " + RepositoryURL;
+ 					message = message + " \n" + RepositoryURL;
 				}
 				else if(Event.equals("Delete"))
 				{
-					String Deletor = AddedInfo[3];
-					String Ref = AddedInfo[4];
-					String RefType = AddedInfo[5];
+					String Deletor = System.getenv("GITHUB_ACTOR");
+					String Ref = System.getenv("BRANCH_NAME");
+					String RefType = System.getenv("BRANCH_TYPE");
 					message = "[" + Deletor + "](" + ServerURL + Deletor + ") has deleted the " + RefType + " - " + Ref;
-					message = message + " " + RepositoryURL;
+					message = message + " \n" + RepositoryURL;
 				}
 				else if(Event.equals("Deployment"))
 				{
-					String Deployer = AddedInfo[3];
-					String DeploymentURL = AddedInfo[4];
+					String Deployer = System.getenv("GITHUB_ACTOR");
+					String DeploymentURL = System.getenv("DEPLOYMENT_URL");
 					message = "A new deployment has been created for the repository - [" + Repository + "](" + RepositoryURL + ")";
-					message = message + " " + DeploymentURL;
+					message = message + " \n" + DeploymentURL;
 				}
 				else if(Event.equals("Deployment Status"))
 				{
-					String Deployer = AddedInfo[3];
-					String DeploymentURL = AddedInfo[4];
-					String Status = AddedInfo[5];
+					String Deployer = System.getenv("GITHUB_ACTOR");
+					String DeploymentURL = System.getenv("DEPLOYMENT_URL");
+					String Status = System.getenv("STATUS");
 					message = "The status of the deployment [" + DeploymentURL + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
-					message = message + " " + DeploymentURL;
+					message = message + " \n" + DeploymentURL;
 				}
 				else if(Event.equals("Discussion"))
 				{
-					String Discusser = AddedInfo[3];
-					String Discussion = AddedInfo[4];
-					String DiscussionURL = AddedInfo[5];
+					String Discusser = System.getenv("GITHUB_ACTOR");
+					String Discussion = System.getenv("DISCUSSION");
+					String DiscussionURL = System.getenv("DISCUSSION_URL");
 					if(Action.equals("created"))
 					{
 						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has created a new discussion - [" + Discussion + "](" + DiscussionURL + ")";
@@ -162,12 +163,12 @@ public class CliqInformer {
 					}
 					else if(Action.equals("labelled"))
 					{
-						String LabelName = AddedInfo[6];
+						String LabelName = System.getenv("LABEL_NAME");
 						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has labelled the discussion [" + Discussion + "](" + DiscussionURL + "] as [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
 					}
 					else if(Action.equals("unlabelled"))
 					{
-						String LabelName = AddedInfo[6];
+						String LabelName = System.getenv("LABEL_NAME");
 						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has removed the discussion [" + Discussion + "](" + DiscussionURL + "] from the label [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
 					}
 					else if(Action.equals("locked"))
@@ -180,7 +181,7 @@ public class CliqInformer {
 					}
 					else if(Action.equals("transferred"))
 					{
-						String NewRepository = AddedInfo[6];
+						String NewRepository = System.getenv("NEW_REPOSITORY");
 						String NewRepositoryURL = ServerURL + NewRepository;
 						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has transfered the discussion [" + Discussion + "](" + DiscussionURL + "] from [" + Repository + "](" + RepositoryURL + ") to [" + NewRepository + "](" + NewRepositoryURL + ")";
 					}
@@ -194,40 +195,40 @@ public class CliqInformer {
 					}
 					else if(Action.equals("category changed"))
 					{
-						String CategoryName = AddedInfo[6];
+						String CategoryName = System.getenv("CATEGORY_NAME");
 						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has changed and added the discussion [" + Discussion + "](" + DiscussionURL + "] under the [" + CategoryName + "](" + RepositoryURL + "/discussions/categories/" + CategoryName + ") category";
 					}
-					message = message + " " + DiscussionURL;
+					message = message + " \n" + DiscussionURL;
 				}
 				else if(Event.equals("Push"))
 				{
-					String Pusher = AddedInfo[3];
-					String Branch_Name = AddedInfo[4];
-					String Branch_Type = AddedInfo[5];
-					String Commit_URL = AddedInfo[6];
-					String Compare_URL = AddedInfo[7];
+					String Pusher = System.getenv("GITHUB_ACTOR");
+					String Branch_Name = System.getenv("GITHUB_REF_NAME");
+					String Branch_Type = System.getenv("GITHUB_REF_TYPE");
+					String Commit_URL = System.getenv("COMMIT_URL");
+					String Compare_URL = System.getenv("COMPARE_URL");
 					message ="[" + Pusher + "](" + ServerURL + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the " + Branch_Type + " [" + Branch_Name + "](" + ServerURL + Repository + "/tree/" + Branch_Name + ")";
-					message = message + " " + Compare_URL;
+					message = message + " \n" + Compare_URL;
 				}
 				else if(Event.equals("Registry Package"))
 				{
-					String Publisher = AddedInfo[3];
-					String RegistryPackageName = AddedInfo[4];
-					String RegistryPackageVersion = AddedInfo[5];
-					String RegistryPackageType = AddedInfo[6];
-					String RegistryPackageURL = AddedInfo[7];
+					String Publisher = System.getenv("GITHUB_ACTOR");
+					String RegistryPackageName = System.getenv("REGISTRY_PACKAGE_NAME");
+					String RegistryPackageVersion = System.getenv("REGISTRY_PACKAGE_VERSION");
+					String RegistryPackageType = System.getenv("REGISTRY_PACKAGE_TYPE");
+					String RegistryPackageURL = System.getenv("REGISTRY_PACKAGE_URL");
 					if(Action.equals("published"))
 					{
 						message = "[" + Publisher + "](" + ServerURL + Publisher + ") has published a new " + RegistryPackageType + " registry package [" + RegistryPackageName + " " + RegistryPackageVersion + "](" + RegistryPackageURL + ")";
 					}
-					message = message + " " + RegistryPackageURL;
+					message = message + " \n" + RegistryPackageURL;
 				}
 				else if(Event.equals("Release"))
 				{
-					String Releaser = AddedInfo[3];
-					String ReleaseName = AddedInfo[4];
-					String ReleaseTagName = AddedInfo[5];
-					String ReleaseURL = AddedInfo[6];
+					String Releaser = System.getenv("GITHUB_ACTOR");
+					String ReleaseName = System.getenv("RELEASE_NAME");
+					String ReleaseTagName = System.getenv("RELEASE_TAG");
+					String ReleaseURL = System.getenv("RELEASE_URL");
 					if(Action.equals("published"))
 					{
 						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has published a new release - [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
@@ -252,49 +253,49 @@ public class CliqInformer {
 					{
 						message = "[" + Releaser + "](" + ServerURL + Releaser + ") has deleted a release [" + ReleaseName + " " + ReleaseTagName + "](" + ReleaseURL + ")";
 					}
-					message = message + " " + ReleaseURL;
+					message = message + " \n" + ReleaseURL;
 				}
 				else if(Event.equals("Repository Dispatch"))
 				{
-					String Trigger_Actor = AddedInfo[3];
-					String WorkflowID = AddedInfo[4];
+					String Trigger_Actor = System.getenv("GITHUB_ACTOR");
+					String WorkflowID = System.getenv("GITHUB_WORKFLOW");
 					String WorkflowURL = ServerURL + Repository + "/actions/runs/" + WorkflowID;
 					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has triggered a new repository dispatch - [" + Action + "](" + WorkflowURL + ")";
-					message = message + " " + RepositoryURL;
+					message = message + " \n" + RepositoryURL;
 				}
 				else if(Event.equals("Schedule"))
 				{
-					String Trigger_Actor = AddedInfo[3];
-					String Workflow = AddedInfo[4];
-					String WorkflowID = AddedInfo[5];
+					String Trigger_Actor = System.getenv("GITHUB_ACTOR");
+					String Workflow = System.getenv("GITHUB_WORKFLOW");
+					String WorkflowID = System.getenv("GITHUB_RUN_ID");
 					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
 					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has scheduled a workflow [" + Workflow + "](" + WorkflowURL  + ")";
-					message = message + " " + WorkflowURL;
+					message = message + " \n" + WorkflowURL;
 				}
 				else if(Event.equals("Status"))
 				{
-					String Trigger_Actor = AddedInfo[3];
-					String Workflow = AddedInfo[4];
-					String WorkflowID = AddedInfo[5];
-					String Status = Workflow;
+					String Trigger_Actor = System.getenv("GITHUB_ACTOR");
+					String Workflow = System.getenv("GITHUB_WORKFLOW");
+					String WorkflowID = System.getenv("GITHUB_RUN_ID");
+					String Status = System.getenv("STATUS");
 					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
 					message = "The status of the [" + Workflow + "](" + WorkflowURL + ") workflow has been updated as " + Status;
-					message = message + RepositoryURL;
+					message = message + " \n" + RepositoryURL;
 				}
 				else if(Event.equals("Watch"))
 				{
-					String Watcher = AddedInfo[3];
+					String Watcher = System.getenv("GITHUB_ACTOR");
 					message = "[" + Watcher + "](" + ServerURL + Watcher + ") has pushed the [" + Repository + "](" + RepositoryURL + ") repository under the Watch category";
-					message = message + " " + RepositoryURL;
+					message = message + " \n" + RepositoryURL;
 				}
 				else if(Event.equals("Workflow Dispatch"))
 				{
-					String Dispatcher = AddedInfo[3];
-					String Workflow = AddedInfo[4];
-					String WorkflowID = AddedInfo[5];
+					String Dispatcher = System.getenv("GITHUB_ACTOR");
+					String Workflow = System.getenv("GITHUB_WORKFLOW");
+					String WorkflowID = System.getenv("GITHUB_RUN_ID");
 					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
 					message = "[" + Dispatcher + "](" + ServerURL + Dispatcher + ") has triggered the [" + Workflow + "](" + WorkflowURL  + ") workflow"; 
-					message = message + " " + WorkflowURL;
+					message = message + " \n" + WorkflowURL;
 				}
 			}
 			else
@@ -460,7 +461,6 @@ public class CliqInformer {
 	// used to write a Github Output so that the Shell Runner can Read
 	public static void writeGithubOutput(Integer Status , String ErrorMessage) throws IOException
 	{
-		System.out.println(System.getenv("ADDONINFO"));
 		Map env = System.getenv();
 		env.forEach((key, value) -> System.out.println(key + " : " + value));
 	  var githubOutput = System.getenv("GITHUB_OUTPUT");
