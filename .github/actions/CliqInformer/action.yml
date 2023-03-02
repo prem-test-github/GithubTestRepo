@@ -270,6 +270,7 @@ runs:
         id: send-message
         shell: bash
         run: |
+          echo "CUSTOM_MESSAGE=${{ env.MESSAGE }}" >> GITHUB_ENV
           JAVA=$JAVA_HOME_19_X64/bin/java
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
           if ${{ env.message != '' }}

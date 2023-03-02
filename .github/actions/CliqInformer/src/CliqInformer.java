@@ -41,7 +41,6 @@ public class CliqInformer {
 			String ActorURL = ServerURL + Actor;
 			String Event = System.getenv("GITHUB_EVENT_NAME");
 			String[] EventWords = Event.split("_");
-			String[] AddedInfo = args[2].split("_\\+_");
 			String Repository = System.getenv("REPOSITORY");
 			String RepositoryURL = ServerURL + Repository;
 			for(String s: EventWords)
