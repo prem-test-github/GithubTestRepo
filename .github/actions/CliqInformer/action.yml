@@ -143,12 +143,12 @@ runs:
             echo "message=${{inputs.deployment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment_status' }}
           then
-            echo "DEPLOYMENT_URL=${{ github.event.deployment_status.url }} >> $GITHUB_ENV
+            echo "DEPLOYMENT_URL=${{ github.event.deployment_status.url }}" >> $GITHUB_ENV
             echo "STATUS=${{ github.event.deployment_status.state }}" >> $GITHUB_ENV
             echo "message=${{inputs.deployment-status-message}}" >> $GITHUB_ENV
           elif ${{github.event_name == 'discussion' }}
           then
-            echo "DISCUSSION=${{ github.event.discussion.title }} >> $GITHUB_ENV 
+            echo "DISCUSSION=${{ github.event.discussion.title }}" >> $GITHUB_ENV 
             echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
             if ${{ github.event.action == 'labelled' || github.event.action == 'unlabelled' }}
             then
