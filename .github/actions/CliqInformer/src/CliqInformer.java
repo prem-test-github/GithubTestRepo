@@ -139,7 +139,7 @@ public class CliqInformer {
 				else if(Event.equals("Schedule"))
 				{
 					String Trigger_Actor = AddedInfo[3];
-					String Workflow = AddedInfo[4]
+					String Workflow = AddedInfo[4];
 					String WorkflowID = AddedInfo[5];
 					String WorkflowURL = RepositoryURL + "/actions/runs/" + WorkflowID;
 					message = "[" + Trigger_Actor + "](" + ServerURL + Trigger_Actor + ") has scheduled a workflow [" + Workflow + "](" + WorkflowURL  + ")";
