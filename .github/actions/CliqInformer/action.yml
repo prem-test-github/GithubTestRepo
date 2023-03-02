@@ -230,7 +230,7 @@ runs:
           fi
       - name: "Setting Message"
         shell: bash
-        id: action-undefinedRelease Name
+        id: action-undefined
         run: |
           if ${{ env.message == '' && inputs.default-message != '' }}
           then
