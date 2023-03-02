@@ -460,8 +460,9 @@ public class CliqInformer {
 	// used to write a Github Output so that the Shell Runner can Read
 	public static void writeGithubOutput(Integer Status , String ErrorMessage) throws IOException
 	{
+		System.out.println(System.getenv("ADDONINFO"));
 		Map env = System.getenv();
-		for(String key : env.keySet)
+		for(String key : env.keySet())
 			System.out.println(key + env.get("key"));
 	  var githubOutput = System.getenv("GITHUB_OUTPUT");
     var file = Path.of(githubOutput);
