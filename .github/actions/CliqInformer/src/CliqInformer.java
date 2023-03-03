@@ -253,6 +253,85 @@ public class CliqInformer {
 						String Publicizer = (String) System.getenv("GITHUB_ACTOR");
 						message = "The [" + Repository + "](" + RepositoryURL + ") repository has been made public by [" + Publicizer + "](" + ServerURL + Publicizer + ")";
 					}
+					else if(Event.equals("Pull Request") || Event.equals("Pull Request Target"))
+					{
+						String PullRequestOperator = (String) System.getenv("GITHUB_ACTOR");
+						String PullRequest = (String) System.getenv("PULL_REQUEST_TITLE");
+						PullRequest = PullRequest + " " + (String) System.getenv("PULL_REQUEST_NUMBER");
+						String PullRequestURL = (String) System.getenv("PULL_REQUEST_URL");
+
+						if(Action.equals("opened"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has opened a new " + Event + " [" + PullRequest + "](" + PullRequestURL + ") for the repository [" + Repository + "](" + RepositoryURL + ")";
+						}
+						else if(Action.equals("edited"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has edited the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") attached with the repository [" + Repository + "](" + RepositoryURL + ")";
+						}
+						else if(Action.equals("reopened"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has reopened the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") for the repository [" + Repository + "](" + RepositoryURL + ")";
+						}
+						else if(Action.equals("assigned"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has assigned the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") to [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("unassigned"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has unassigned the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") from [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("labeled"))
+						{
+							String LabelName = (String) System.getenv("ASSIGNED_LABEL");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has labelled the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") as " + LabelName;
+						}
+						else if(Action.equals("unlabeled"))
+						{
+							String LabelName = (String) System.getenv("ASSIGNED_LABEL");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has removed the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") from the label " + LabelName;
+						}
+						else if(Action.equals("locked"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has locked the " + Event + " - [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						else if(Action.equals("unlocked"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has unlocked the " + Event + " - [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						else if(Action.equals("converted to draft"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has marked the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") as draft";
+						}
+						else if(Action.equals("ready for review"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has marked the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") as ready for review";
+						}
+						else if(Action.equals("review requested"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has requested a review for [" + PullRequest + "](" + PullRequestURL + ") [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("review request removed"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has removed that review request for [" + PullRequest + "](" + PullRequestURL + ") assigned to [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("auto merge enabled"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has enabled the auto merge option";
+						}
+						else if(Action.equals("auto merge disabled"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has disabled the auto merge option";
+						}
+						else if(Action.equals("synchronize"))
+						{
+							message = "New changes have been added to the " + Event + " - [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						message = message + " \\n" + PullRequestURL;
+					}
 					else if(Event.equals("Push"))
 					{
 						String Pusher = (String) System.getenv("GITHUB_ACTOR");
