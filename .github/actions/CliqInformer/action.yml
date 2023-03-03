@@ -264,7 +264,6 @@ runs:
               MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
               echo "message=$MESSAGE" >> $GITHUB_ENV
             fi
-          fi
           elif ${{env.message == '' && inputs.set-message-if-none }}
           then
             echo "MESSAGE=_+_" >> GITHUB_ENV
