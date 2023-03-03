@@ -340,7 +340,7 @@ public class CliqInformer {
 			    i+= MAX_MESSAGE_LENGTH;
 			  }
 			  messages.add(split_message);
-			\n}
+			}
 			for(String msg : messages)
 			{
 			  msg = msg.replace("\"","'");
