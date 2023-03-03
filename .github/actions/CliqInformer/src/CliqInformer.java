@@ -48,7 +48,7 @@ public class CliqInformer {
 			  Event += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
 			Event = Event.trim();
 			String Action = (String) System.getenv("ACTION");
-			if(!Action.equals(""))
+			if(!Action.equals("") || Action != null)
 			{
 			  String[] ActionWords = Action.split("_");
 			  Action = new String();
