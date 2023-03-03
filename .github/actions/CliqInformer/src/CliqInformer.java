@@ -41,8 +41,9 @@ public class CliqInformer {
 			String ActorURL = ServerURL + Actor;
 			String Event = (String) System.getenv("GITHUB_EVENT_NAME");
 			String[] EventWords = Event.split("_");
-			String Repository = (String) System.getenv("REPOSITORY");
+			String Repository = (String) System.getenv("GITHUB_REPOSITORY");
 			String RepositoryURL = ServerURL + Repository;
+			String Event = new String();
 			for(String s: EventWords)
 			  Event += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
 			Event = Event.trim();
@@ -60,7 +61,7 @@ public class CliqInformer {
 				Action = "made";
 			}
 			System.out.println(Actor + " " + CustomMessage + " " + Event + Repository);
-			System.out.println(System.getenv("GITHUB_ACTOR") + " " + System.getenv("CUSTOM_MESSAGE") + " " + System.getenv("GITHUB_EVENT_NAME") + " " + System.getenv("REPOSITORY"));
+			System.out.println(System.getenv("GITHUB_ACTOR") + " " + System.getenv("CUSTOM_MESSAGE") + " " + System.getenv("GITHUB_EVENT_NAME") + " " + System.getenv("GITHUB_REPOSITORY") + System.getenv("GITHUB_ACTION"));
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			message = CustomMessage;
 			if(CustomMessage.equals("_+_"))
