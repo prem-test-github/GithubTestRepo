@@ -43,7 +43,7 @@ public class CliqInformer {
 			String[] EventWords = Event.split("_");
 			String Repository = (String) System.getenv("GITHUB_REPOSITORY");
 			String RepositoryURL = ServerURL + Repository;
-			String Event = new String();
+			Event = new String();
 			for(String s: EventWords)
 			  Event += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
 			Event = Event.trim();
