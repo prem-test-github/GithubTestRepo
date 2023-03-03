@@ -33,7 +33,7 @@ inputs:
     description: "The Message to be Delivered to the Cliq Channel during a gollum event"
   issue-comment-message:
     description: "The Message to be Delivered to the Cliq Channel during a issue comment event"
-  issue-message:
+  issues-message:
     description: "The Message to be Delivered to the Cliq Channel during a issues event"
   label-message:
     description: "The Message to be Delivered to the Cliq Channel during a label event"
@@ -113,54 +113,39 @@ runs:
         id: action-finder
         shell: bash
         run: |
-          EOF='_+_'
           echo "ACTION={{ github.event.action }}" >> $GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
             echo "BRANCH_RULE=${{ github.event.rule.name }}" >> $GITHUB_ENV
             echo "BRANCH_RULE_ID=${{ github.event.rule.id }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.branch-protection-rule-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{ inputs.branch-protection-rule-message }}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'check_run' }}
           then
             echo "CHECK_RUN_NAME=${{ github.event.check_run.name }}" >> $GITHUB_ENV
             echo "CHECK_RUN_URL=${{ github.event.check_run.html_url }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.check-run-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.check-run-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'check_suite' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.check-suite-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.check-suite-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'create' }}
           then
             echo "BRANCH_NAME=${{ github.event.ref }}" >> $GITHUB_ENV
             echo "BRANCH_TYPE=${{ github.event.ref_type }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.create-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{ inputs.create-message }}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'delete' }}
           then
             echo "BRANCH_NAME=${{ github.event.ref }}" >> $GITHUB_ENV
             echo "BRANCH_TYPE=${{ github.event.ref_type }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.delete-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.delete-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment' }}
           then
             echo "DEPLOYMENT_URL=${{ github.event.deployment.url }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.deployment-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.deployment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment_status' }}
           then
             echo "DEPLOYMENT_URL=${{ github.event.deployment_status.deployment_url }}" >> $GITHUB_ENV
             echo "STATUS=${{ github.event.deployment_status.state }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.deployment-status-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.deployment-status-message}}" >> $GITHUB_ENV
           elif ${{github.event_name == 'discussion' }}
           then
             echo "DISCUSSION=${{ github.event.discussion.title }}" >> $GITHUB_ENV
@@ -175,139 +160,94 @@ runs:
             then
               echo "CATEGORY_NAME=${{ github.event.discussion.category.name }}" >> $GITHUB_ENV;
             fi
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.discussion-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.discussion-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'discussion_comment' }}
           then
             echo "DISCUSSION_COMMENT=${{ github.event.comment.body }}" >> $GITHUB_ENV
             echo "COMMENT_URL=${{ github.event.comment.html_url }}" >> $GITHUB_ENV
             echo "DISCUSSION_TITLE=${{ github.event.discussion.title }}" >> $GITHUB_ENV
             echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.discussion-comment-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.discussion-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'fork' }}
           then
             echo "NEW_REPOSITORY=${{ github.event.forkee.full_name }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.fork-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.fork-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'gollum' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.gollum-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.gollum-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' && !github.event.issue.pull_request }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.issue-comment-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.issue-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.pull-request-comment-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            MESSAGE='${{inputs.pull-request-comment-message}}'
+            MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
+            echo "message=$MESSAGE" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issues' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.issue-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.issues-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'label' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.label-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.label-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'merge_group' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.merge-group-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.merge-group-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'milestone' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.milestone-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.milestone-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'page_build' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.page-build-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "PAGE_BUILD_URL=${{ github.event.build.url }}" >> $GITHUB_ENV
+            echo "message=${{inputs.page-build-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'public' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.public-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.public-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.pull-request-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.pull-request-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_review' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.pull-request-review-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.pull-request-review-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_review_comment' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.pull-request-review-comment-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.pull-request-review-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_target' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            ${{ inputs.pull-request-target-message }} >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.pull-request-target-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
           then
             echo "COMMIT_URL=${{ github.event.head_commit.url }}" >> $GITHUB_ENV
             echo "COMPARE_URL=${{ github.event.compare  }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            {{ inputs.push-message }} >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.push-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'registry_package' }}
           then
             echo "REGISTRY_PACKAGE_NAME=${{ github.event.registry_package.name }}" >> $GITHUB_ENV
             echo "REGISTRY_PACKAGE_VERSION=${{ github.event.registry_package.package_version.name }}" >> $GITHUB_ENV
             echo "REGISTRY_PACKAGE_TYPE=${{github.event.registry_package.package_type }}" >> $GITHUB_ENV
             echo "REGISTRY_PACKAGE_URL=${{github.event.registry_package.package_html_url }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.registry-package-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.registry-package-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'release' }}
           then
             echo "RELEASE_NAME=${{ github.event.release.name }}" >> $GITHUB_ENV
             echo "RELEASE_TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
             echo "RELEASE_HTML=${{ github.event.release.html_url }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.release-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.release-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'repository_dispatch' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.repository-dispatch-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.repository-dispatch-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'schedule' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.schedule-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.schedule-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'status' }}
           then
             echo "STATUS=${{ github.event.state }}" >> $GITHUB_ENV
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.status-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.status-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'watch' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.watch-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.watch-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'workflow_dispatch' }}
           then
-            echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.workflow-dispatch-message }}" >> $GITHUB_ENV
-            echo "$EOF" >> $GITHUB_ENV
+            echo "message=${{inputs.workflow-dispatch-message}}" >> $GITHUB_ENV
           fi
       - name: "Setting Message"
         shell: bash
@@ -318,17 +258,13 @@ runs:
             echo "message=${{inputs.default-message}}" >> $GITHUB_ENV
             if ${{ github.event_name == 'issue_comment' && !!github.event.issue.pull_request }}
             then
-              echo "MESSAGE="MESSAGE<<$EOF"
-              ${{ inputs.default-message }}
-              echo "$EOF"
+              MESSAGE='${{inputs.default-message}}'
               MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
-              echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-              $MESSAGE >> $GITHUB_ENV
-              echo "$EOF" >> $GITHUB_ENV
+              echo "message=$MESSAGE" >> $GITHUB_ENV
             fi
-          elif ${{env.MESSAGE == '' && inputs.set-message-if-none }}
+          elif ${{env.message == '' && inputs.set-message-if-none }}
           then
-            echo "message=_+_" >> $GITHUB_ENV
+            echo "CUSTOM_MESSAGE=_+_" >> $GITHUB_ENV
           fi
       - name: "Running the Cliq Integration"
         id: send-message
