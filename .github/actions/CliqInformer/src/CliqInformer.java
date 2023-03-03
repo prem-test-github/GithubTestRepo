@@ -221,7 +221,7 @@ public class CliqInformer {
 					{
 						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has deleted a [comment](" + CommentURL + ") attached with the discussion - [" + DiscussionTitle + "](" + DiscussionURL + ")";
 					}
-					,message = message + " \\n" + CommentURL;
+					message = message + " \\n" + CommentURL;
 				}
 				else if(Event.equals("Fork"))
 				{
