@@ -36,7 +36,7 @@ public class CliqInformer {
 			String CliqChannelLink = args[0];
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
 			  INVALID_ENDPOINT_ERROR = false;
-			CustomMessage = (String) System.getenv("MESSAGE");
+			CustomMessage = (String) System.getenv("CUSTOM_MESSAGE");
 			String Actor = (String) System.getenv("GITHUB_ACTOR");
 			String ActorURL = ServerURL + Actor;
 			String Event = (String) System.getenv("GITHUB_EVENT_NAME");
