@@ -113,7 +113,7 @@ runs:
         id: action-finder
         shell: bash
         run: |
-          echo "ACTION={{ github.event.action }}" >> $GITHUB_ENV
+          echo "ACTION=${{ github.event.action }}" >> $GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
             echo "BRANCH_RULE=${{ github.event.rule.name }}" >> $GITHUB_ENV
