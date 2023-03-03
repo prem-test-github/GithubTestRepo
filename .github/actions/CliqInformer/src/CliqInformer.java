@@ -37,7 +37,7 @@ public class CliqInformer {
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
 			  INVALID_ENDPOINT_ERROR = false;
 			CustomMessage = (String) System.getenv("CUSTOM_MESSAGE");
-			String Actor = (String) (String) System.getenv("GITHUB_ACTOR");
+			String Actor = (String) System.getenv("GITHUB_ACTOR");
 			String ActorURL = ServerURL + Actor;
 			String Event = (String) System.getenv("GITHUB_EVENT_NAME");
 			String[] EventWords = Event.split("_");
@@ -59,6 +59,8 @@ public class CliqInformer {
 			{
 				Action = "made";
 			}
+			System.out.println(Actor + " " + CustomMessage + " " + Event + Repository);
+			System.out.println(System.getenv("GITHUB_ACTOR") + " " + System.getenv("CUSTOM_MESSAGE") + " " + System.getenv("GITHUB_EVENT_NAME") + " " + System.getenv("REPOSITORY"));
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			message = CustomMessage;
 			if(CustomMessage.equals("_+_"))
