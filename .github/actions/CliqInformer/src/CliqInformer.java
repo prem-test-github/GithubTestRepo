@@ -356,6 +356,7 @@ public class CliqInformer {
 					message = message.replace("(event)","*" + Event + "*");
 					message = message.replace("(action)",Action);
 				}
+				System.out.println(message);
 				ArrayList<String> messages = new ArrayList<String>();
 				for(int i = 0 ; i < message.length() ;)
 				{
