@@ -263,7 +263,7 @@ runs:
             echo "COMMIT_URL=${{ github.event.head_commit.url }}" >> $GITHUB_ENV
             echo "COMPARE_URL=${{ github.event.compare  }}" >> $GITHUB_ENV
             echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            echo "${{ inputs.push-message }}" >> $GITHUB_ENV
+            {{ inputs.push-message }} >> $GITHUB_ENV
             echo "$EOF" >> $GITHUB_ENV
           elif ${{ github.event_name == 'registry_package' }}
           then
@@ -319,11 +319,11 @@ runs:
             if ${{ github.event_name == 'issue_comment' && !!github.event.issue.pull_request }}
             then
               echo "MESSAGE="MESSAGE<<$EOF"
-              echo "${{ inputs.default-message }}"
+              ${{ inputs.default-message }}
               echo "$EOF"
               MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
               echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-              echo "$MESSAGE" >> $GITHUB_ENV
+              $MESSAGE >> $GITHUB_ENV
               echo "$EOF" >> $GITHUB_ENV
             fi
           elif ${{env.MESSAGE == '' && inputs.set-message-if-none }}
