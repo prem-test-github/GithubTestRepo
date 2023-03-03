@@ -87,7 +87,7 @@ jobs:
           #discussion-comment-message: 'Discussion Comment :idea:\n A (event) has been (action)'
           #fork-message: '(repo) has been forked by (me) under (ref)'
           #gollum-message: 'A (event) has Occured'
-          #issues-message: 'Oops :surprise:\n A (event) is (action) by (me) at (repo) under (ref)'
+          #issue-message: 'Oops :surprise:\n A (event) is (action) by (me) at (repo) under (ref)'
           #issue-comment-message: 'Hey :awe:\n (workflow) (event) has been (action) by (me) at (repo) under (ref)'
           #label-message: 'Seems Like New Issues required New Labels :curious:\n A (event) has been (action) by (me)'
           #merge-group-message: '(workflow) is triggered by (me) at (repo) under (ref)'
