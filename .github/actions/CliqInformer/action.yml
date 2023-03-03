@@ -113,7 +113,7 @@ runs:
         id: action-finder
         shell: bash
         run: |
-          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          EOF='_+_'
           echo "ACTION={{ github.event.action }}" >> $GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
