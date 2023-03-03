@@ -208,6 +208,7 @@ public class CliqInformer {
 					String Compare_URL = (String) System.getenv("COMPARE_URL");
 					message ="[" + Pusher + "](" + ServerURL + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the " + Branch_Type + " [" + Branch_Name + "](" + ServerURL + Repository + "/tree/" + Branch_Name + ")";
 					message = message + " \n" + Compare_URL;
+					System.out.println(message);
 				}
 				else if(Event.equals("Registry Package"))
 				{
@@ -460,8 +461,6 @@ public class CliqInformer {
 	// used to write a Github Output so that the Shell Runner can Read
 	public static void writeGithubOutput(Integer Status , String ErrorMessage) throws IOException
 	{
-		Map env = System.getenv();
-		env.forEach((key, value) -> System.out.println(key + " : " + value));
 	  var githubOutput = (String) System.getenv("GITHUB_OUTPUT");
     var file = Path.of(githubOutput);
 	  var lines = ("message-status=" + Status).lines().toList();
