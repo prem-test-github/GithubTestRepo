@@ -265,11 +265,14 @@ runs:
               echo "message=$MESSAGE" >> $GITHUB_ENV
             fi
           fi
+          elif ${{env.message == '' && inputs.set-message-if-none }}
+          then
+            echo "MESSAGE=_+_" >> GITHUB_ENV
+          fi
       - name: "Running the Cliq Integration"
         id: send-message
         shell: bash
         run: |
-          echo "CUSTOM_MESSAGE=${{ env.MESSAGE }}" >> GITHUB_ENV
           JAVA=$JAVA_HOME_19_X64/bin/java
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
           if ${{ env.message != '' }}
@@ -277,7 +280,6 @@ runs:
             $JAVA $CONNECTOR "${{ inputs.channel-endpoint }}"
           elif ${{ env.message == '' && inputs.set-message-if-none }}
           then
-            echo "CUSTOM_MESSAGE=_+_" >> $GITHUB_ENV
             $JAVA $CONNECTOR "${{ inputs.channel-endpoint }}"
           fi
       - name: "Displaying Output"
