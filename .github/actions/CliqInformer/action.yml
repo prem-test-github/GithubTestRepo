@@ -265,7 +265,6 @@ runs:
           elif ${{env.message == '' && inputs.set-message-if-none }}
           then
             echo "CUSTOM_MESSAGE=_+_" >> $GITHUB_ENV
-          else
           elif ${{env.message == ''}}
           then
             echo "CUSTOM_MESSAGE=" >> $GITHUB_ENV
