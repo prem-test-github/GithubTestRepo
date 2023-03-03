@@ -263,7 +263,7 @@ runs:
             echo "COMMIT_URL=${{ github.event.head_commit.url }}" >> $GITHUB_ENV
             echo "COMPARE_URL=${{ github.event.compare  }}" >> $GITHUB_ENV
             echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.push-message }}" >> $GITHUB_ENV
+            echo "${{ inputs.push-message }}" >> $GITHUB_ENV
             echo "$EOF" >> $GITHUB_ENV
           elif ${{ github.event_name == 'registry_package' }}
           then
