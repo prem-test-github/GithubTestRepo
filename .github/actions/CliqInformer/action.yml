@@ -277,6 +277,7 @@ runs:
             $JAVA $CONNECTOR "${{ inputs.channel-endpoint }}"
           elif ${{ env.message == '' && inputs.set-message-if-none }}
           then
+            echo "MESSAGE=_+_" >> $GITHUB_ENV
             $JAVA $CONNECTOR "${{ inputs.channel-endpoint }}"
           fi
       - name: "Displaying Output"

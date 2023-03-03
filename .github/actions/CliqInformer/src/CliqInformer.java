@@ -61,7 +61,7 @@ public class CliqInformer {
 			}
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			message = CustomMessage;
-			if(CustomMessage.equals(""))
+			if(CustomMessage.equals("_+_"))
 			{
 				message = new String();
 				if(Event.equals("Branch Protection Rule"))
