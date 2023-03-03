@@ -35,13 +35,7 @@ on:
   milestone:
     # types : [created , closed , opened , edited , deleted]
   page_build:
-    # No types
-  project:
-    # types : [created , closed , reopened , edited , deleted]
-  project_card:
-    # types : [created , moved , converted , edited , deleted]
-  project_column: 
-    # types : [created , updated , moved , deleted]
+    # No Types
   public:
     # No Types
   pull_request:

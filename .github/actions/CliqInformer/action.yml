@@ -113,6 +113,8 @@ runs:
         id: action-finder
         shell: bash
         run: |
+          echo "${{ toJSON(github) }}"
+          echo "$ACTION={{ github.event.action }}" >> $GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
             echo "BRANCH_RULE=${{ github.event.rule.name }}" >> $GITHUB_ENV
@@ -147,7 +149,7 @@ runs:
             echo "message=${{inputs.deployment-status-message}}" >> $GITHUB_ENV
           elif ${{github.event_name == 'discussion' }}
           then
-            echo "DISCUSSION=${{ github.event.discussion.title }}" >> $GITHUB_ENV 
+            echo "DISCUSSION=${{ github.event.discussion.title }}" >> $GITHUB_ENV
             echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
             if ${{ github.event.action == 'labelled' || github.event.action == 'unlabelled' }}
             then
@@ -162,9 +164,14 @@ runs:
             echo "message=${{inputs.discussion-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'discussion_comment' }}
           then
+            echo "DISCUSSION_COMMENT=${{ github.event.comment.body }}" >> $GITHUB_ENV
+            echo "COMMENT_URL=${{ github.event.comment.html_url }}" >> $GITHUB_ENV
+            echo "DISCUSSION_TITLE=${{ github.event.discussion.title }}" >> $GITHUB_ENV
+            echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.discussion-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'fork' }}
           then
+            echo "NEW_REPOSITORY=${{ github.event.forkee.full_name }}" >> $GITHUB_ENV
             echo "message=${{inputs.fork-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'gollum' }}
           then
@@ -191,16 +198,8 @@ runs:
             echo "message=${{inputs.milestone-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'page_build' }}
           then
+            echo "PAGE_BUILD_URL=${{ github.event.build.url }}" >> $GITHUB_ENV
             echo "message=${{inputs.page-build-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'project' }}
-          then
-            echo "message=${{inputs.project-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'project_card' }}
-          then
-            echo "message=${{inputs.project-card-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'project_column' }}
-          then
-            echo "message=${{inputs.project-column-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'public' }}
           then
             echo "message=${{inputs.public-message}}" >> $GITHUB_ENV

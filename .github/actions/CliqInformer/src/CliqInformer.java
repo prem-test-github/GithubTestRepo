@@ -47,8 +47,8 @@ public class CliqInformer {
 			for(String s: EventWords)
 			  Event += s.substring(0,1).toUpperCase() + s.substring(1) + " ";
 			Event = Event.trim();
-			String Action = (String) System.getenv("GITHUB_ACTION");
-			if(!Action.equals("__self"))
+			String Action = (String) System.getenv("ACTION");
+			if(!Action.equals(""))
 			{
 			  String[] ActionWords = Action.split("_");
 			  Action = new String();
@@ -61,7 +61,7 @@ public class CliqInformer {
 				Action = "made";
 			}
 			System.out.println(Actor + " " + CustomMessage + " " + Event + Repository);
-			System.out.println(System.getenv("GITHUB_ACTOR") + " " + System.getenv("CUSTOM_MESSAGE") + " " + System.getenv("GITHUB_EVENT_NAME") + " " + System.getenv("GITHUB_REPOSITORY") + System.getenv("GITHUB_ACTION"));
+			System.out.println(System.getenv("GITHUB_ACTOR") + " " + System.getenv("CUSTOM_MESSAGE") + " " + System.getenv("GITHUB_EVENT_NAME") + " " + System.getenv("GITHUB_REPOSITORY") + System.getenv("ACTION"));
 			String CliqInformerURL = "https://workdrive.zohoexternal.com/external/047d96f793983933bbdb59deb9c44f5443b83a7188e278736405d4d733923181/download?directDownload=true";
 			message = CustomMessage;
 			if(CustomMessage.equals("_+_"))
@@ -202,6 +202,54 @@ public class CliqInformer {
 					}
 					message = message + " \\n" + DiscussionURL;
 				}
+				else if(Event.equals("Discussion Comment"))
+				{
+					String Discusser = (String) System.getenv("GITHUB_ACTOR");
+					String DiscussionTitle = (String) System.getenv("DISCUSSION_TITLE");
+					String DiscussionComment = (String) System.getenv("DISCUSSION_COMMENT");
+					String DiscussionURL = (String) System.getenv("DISCUSSION_URL");
+					String CommentURL = (String) System.getenv("COMMENT_URL");
+					if(Action.equals("created"))
+					{
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has added a new [comment](" + CommentURL + ") to the discussion - [" + DiscussionTitle + "](" + DiscussionURL + ")\\n" + DiscussionComment ;
+					}
+					else if(Action.equals("edited"))
+					{
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has edited a [comment](" + CommentURL + ") attached to the discussion - [" + DiscussionTitle + "](" + DiscussionURL + ")";
+					}
+					else if(Action.equals("deleted"))
+					{
+						message = "[" + Discusser + "](" + ServerURL + Discusser + ") has deleted a [comment](" + CommentURL + ") attached with the discussion - [" + DiscussionTitle + "](" + DiscussionURL + ")";
+					}
+					,message = message + " \\n" + CommentURL;
+				}
+				else if(Event.equals("Fork"))
+				{
+					String Forker = (String) System.getenv("GITHUB_ACTOR");
+					String Forkee = (String) System.getenv("NEW_REPOSITORY");
+					String RepoOwner = (String) System.getenv("GITHUB_REPO_OWNER");
+					String ForkerURL = ServerURL + Forker;
+					String RepoOwnerURL = ServerURL + RepoOwner;
+					String ForkeeURL = ServerURL + Forkee;
+					message = "[" + Forker + "](" + ForkerURL + ") has forked [" + RepoOwner + "](" + RepoOwnerURL + ")'s [" + Repository + "](" + RepositoryURL + ") repository to [" + Actor + "](" + ActorURL + ")'s [" + Forkee + "](" + ForkeeURL + ") repository";
+					message = message + " \\n" + ForkeeURL;
+				}
+				else if(Event.equals("Gollum"))
+				{
+					String PageHandler = (String) System.getenv("GITHUB_ACTOR");
+					String WikiPagesURL = (String) System.getenv("WIKI_PAGE_URL");
+					message = "A few changes has been made to one of the Wiki pages of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
+				}
+				else if(Event.equals("Page Build"))
+				{
+					String PageBuilder = (String) System.getenv("GITHUB_ACTOR");
+					message = "A new [page build](" + System.getenv("PAGE_BUILD_URL") + ") has been created for the repository - [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageBuilder + "](" + ServerURL + PageBuilder + ")";
+				}
+				else if(Event.equals("Public"))
+				{
+					String Publicizer = (String) System.getenv("GITHUB_ACTOR");
+					message = "The [" + Repository + "](" + RepositoryURL + ") repository has been made public by [" + Publicizer + "](" + ServerURL + Publicizer + ")";
+				}
 				else if(Event.equals("Push"))
 				{
 					String Pusher = (String) System.getenv("GITHUB_ACTOR");
@@ -211,7 +259,6 @@ public class CliqInformer {
 					String Compare_URL = (String) System.getenv("COMPARE_URL");
 					message ="[" + Pusher + "](" + ServerURL + Pusher + ") has pushed a new [code](" + Commit_URL + ") in the " + Branch_Type + " [" + Branch_Name + "](" + ServerURL + Repository + "/tree/" + Branch_Name + ")";
 					message = message + " \\n" + Compare_URL;
-					System.out.println(message);
 				}
 				else if(Event.equals("Registry Package"))
 				{
