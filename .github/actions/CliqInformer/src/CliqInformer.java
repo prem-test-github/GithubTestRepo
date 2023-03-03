@@ -237,13 +237,12 @@ public class CliqInformer {
 				else if(Event.equals("Gollum"))
 				{
 					String PageHandler = (String) System.getenv("GITHUB_ACTOR");
-					String WikiPagesURL = (String) System.getenv("WIKI_PAGE_URL");
-					message = "A few changes has been made to one of the Wiki pages of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
+					message = "A few changes has been made to the Wiki pages of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
 				}
 				else if(Event.equals("Page Build"))
 				{
 					String PageBuilder = (String) System.getenv("GITHUB_ACTOR");
-					message = "A new [page build](" + System.getenv("PAGE_BUILD_URL") + ") has been created for the repository - [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageBuilder + "](" + ServerURL + PageBuilder + ")";
+					message = "A new page build has been created for the repository - [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageBuilder + "](" + ServerURL + PageBuilder + ")";
 				}
 				else if(Event.equals("Public"))
 				{

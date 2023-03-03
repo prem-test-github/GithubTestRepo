@@ -113,7 +113,7 @@ runs:
         id: action-finder
         shell: bash
         run: |
-          echo "${{ toJSON(github) }}"
+          echo "${{ toJSON(github.event) }}"
           echo "$ACTION={{ github.event.action }}" >> $GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
@@ -144,7 +144,7 @@ runs:
             echo "message=${{inputs.deployment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment_status' }}
           then
-            echo "DEPLOYMENT_URL=${{ github.event.deployment_status.url }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_URL=${{ github.event.deployment_status.deployment_url }}" >> $GITHUB_ENV
             echo "STATUS=${{ github.event.deployment_status.state }}" >> $GITHUB_ENV
             echo "message=${{inputs.deployment-status-message}}" >> $GITHUB_ENV
           elif ${{github.event_name == 'discussion' }}
