@@ -263,7 +263,7 @@ public class CliqInformer {
 						String NewWord = new String();
 						if(Action.equals("created"))
 							NewWord = "new ";
-						message = "[" + Milestoner + "](" ServerURL + Milestoner + ") has " + Action + " a " + NewWord + "milestone - " + MilestoneName;
+						message = "[" + Milestoner + "](" + ServerURL + Milestoner + ") has " + Action + " a " + NewWord + "milestone - " + MilestoneName;
 					}
 					else if(Event.equals("Page Build"))
 					{
