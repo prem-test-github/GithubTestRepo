@@ -256,7 +256,7 @@ runs:
           elif ${{ github.event_name == 'pull_request_target' }}
           then
             echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-            "${{ inputs.pull-request-target-message }}" >> $GITHUB_ENV
+            ${{ inputs.pull-request-target-message }} >> $GITHUB_ENV
             echo "$EOF" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
           then
