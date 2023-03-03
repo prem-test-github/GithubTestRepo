@@ -382,7 +382,7 @@ public class CliqInformer {
 						{
 							message = "[" + Reviewer + "](" + ServerURL + Reviewer + ") has dismissed a [review](" + PullRequestReviewURL + ") for the pull request [" + PullRequest + "](" + PullRequestURL + ")";
 						}
-						else if(Aciton.equals("edited"))
+						else if(Action.equals("edited"))
 						{
 							message = "[" + Reviewer + "](" + ServerURL + Reviewer + ") has edited the [review details](" + PullRequestReviewURL + ") for the pull request [" + PullRequest + "](" + PullRequestURL + ")";
 						}
