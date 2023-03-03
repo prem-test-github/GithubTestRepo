@@ -80,7 +80,7 @@ public class CliqInformer {
 						}
 						else if(Action.equals("deleted"))
 						{
-							message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has deleted an existing branch protection rule";
+							message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has deleted an existing branch protection rule - " + Rule;
 						}
 						else if(Action.equals("edited"))
 						{
@@ -128,16 +128,18 @@ public class CliqInformer {
 					else if(Event.equals("Deployment"))
 					{
 						String Deployer = (String) System.getenv("GITHUB_ACTOR");
+						String DeploymentEnv = (String) System.getenv("DEPLOYMENT_ENV");
 						String DeploymentURL = (String) System.getenv("DEPLOYMENT_URL");
-						message = "A new deployment has been created for the repository - [" + Repository + "](" + RepositoryURL + ")";
+						message = "A new deployment - " + DeploymentEnv + " - has been created for the repository - [" + Repository + "](" + RepositoryURL + ")";
 						message = message + " \\n" + DeploymentURL;
 					}
 					else if(Event.equals("Deployment Status"))
 					{
 						String Deployer = (String) System.getenv("GITHUB_ACTOR");
+						String DeploymentEnv = (String) System.getenv("DEPLOYMENT_ENV");
 						String DeploymentURL = (String) System.getenv("DEPLOYMENT_URL");
-						String Status = (String) System.getenv("STATUS");
-						message = "The status of the deployment [" + DeploymentURL + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
+						String Status = (String) System.getenv("STATUS").replace("-"," ");
+						message = "The status of the deployment [" + DeploymentEnv + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
 						message = message + " \\n" + DeploymentURL;
 					}
 					else if(Event.equals("Discussion"))
@@ -165,15 +167,15 @@ public class CliqInformer {
 						{
 							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has unpinned the discussion - [" + Discussion + "](" + DiscussionURL + ")";
 						}
-						else if(Action.equals("labelled"))
+						else if(Action.equals("labeled"))
 						{
 							String LabelName = (String) System.getenv("LABEL_NAME");
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has labelled the discussion [" + Discussion + "](" + DiscussionURL + "] as [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has labelled the discussion [" + Discussion + "](" + DiscussionURL + ") as [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
 						}
-						else if(Action.equals("unlabelled"))
+						else if(Action.equals("unlabeled"))
 						{
 							String LabelName = (String) System.getenv("LABEL_NAME");
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has removed the discussion [" + Discussion + "](" + DiscussionURL + "] from the label [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has removed the discussion [" + Discussion + "](" + DiscussionURL + ") from the label [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
 						}
 						else if(Action.equals("locked"))
 						{
@@ -187,7 +189,7 @@ public class CliqInformer {
 						{
 							String NewRepository = (String) System.getenv("NEW_REPOSITORY");
 							String NewRepositoryURL = ServerURL + NewRepository;
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has transfered the discussion [" + Discussion + "](" + DiscussionURL + "] from [" + Repository + "](" + RepositoryURL + ") to [" + NewRepository + "](" + NewRepositoryURL + ")";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has transfered the discussion [" + Discussion + "](" + DiscussionURL + ") from [" + Repository + "](" + RepositoryURL + ") to [" + NewRepository + "](" + NewRepositoryURL + ")";
 						}
 						else if(Action.equals("answered"))
 						{
@@ -200,7 +202,7 @@ public class CliqInformer {
 						else if(Action.equals("category changed"))
 						{
 							String CategoryName = (String) System.getenv("CATEGORY_NAME");
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has changed and added the discussion [" + Discussion + "](" + DiscussionURL + "] under the [" + CategoryName + "](" + RepositoryURL + "/discussions/categories/" + CategoryName + ") category";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has changed and added the discussion [" + Discussion + "](" + DiscussionURL + ") under the [" + CategoryName + "](" + RepositoryURL + "/discussions/categories/" + CategoryName + ") category";
 						}
 						message = message + " \\n" + DiscussionURL;
 					}
@@ -213,7 +215,7 @@ public class CliqInformer {
 						String CommentURL = (String) System.getenv("COMMENT_URL");
 						if(Action.equals("created"))
 						{
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has added a new [comment](" + CommentURL + ") to the discussion - [" + DiscussionTitle + "](" + DiscussionURL + ")\\n" + DiscussionComment ;
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has added a new [comment](" + CommentURL + ") to the discussion - [" + DiscussionTitle + "](" + DiscussionURL + ")";
 						}
 						else if(Action.equals("edited"))
 						{
@@ -229,7 +231,7 @@ public class CliqInformer {
 					{
 						String Forker = (String) System.getenv("GITHUB_ACTOR");
 						String Forkee = (String) System.getenv("NEW_REPOSITORY");
-						String RepoOwner = (String) System.getenv("GITHUB_REPO_OWNER");
+						String RepoOwner = (String) System.getenv("GITHUB_REPOSITORY_OWNER");
 						String ForkerURL = ServerURL + Forker;
 						String RepoOwnerURL = ServerURL + RepoOwner;
 						String ForkeeURL = ServerURL + Forkee;
@@ -239,7 +241,7 @@ public class CliqInformer {
 					else if(Event.equals("Gollum"))
 					{
 						String PageHandler = (String) System.getenv("GITHUB_ACTOR");
-						message = "A few changes has been made to the Wiki pages of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
+						message = "A few changes has been made to the [Wiki pages](" + RepositoryURL + "/wiki) of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
 					}
 					else if(Event.equals("Page Build"))
 					{
