@@ -217,6 +217,7 @@ runs:
               echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
               echo "ASSIGNED_USER=${{ github.event.requested_reviewer.name }}" >> $GITHUB_ENV
+            fi
             echo "message=${{inputs.pull-request-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_review' }}
           then
