@@ -231,8 +231,8 @@ runs:
           elif ${{ github.event_name == 'release' }}
           then
             echo "RELEASE_NAME=${{ github.event.release.name }}" >> $GITHUB_ENV
-            echo "RELEASE_TAG=${{ github.event.release.tag_name}}" >> $GITHUB_ENV
-            echo "RELEASE_HTMLgithub.event.release.html_url }}" >> $GITHUB_ENV
+            echo "RELEASE_TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+            echo "RELEASE_HTML=${{ github.event.release.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.release-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'repository_dispatch' }}
           then
@@ -266,7 +266,7 @@ runs:
             fi
           elif ${{env.message == '' && inputs.set-message-if-none }}
           then
-            echo "MESSAGE=_+_" >> GITHUB_ENV
+            echo "CUSTOM_MESSAGE=_+_" >> GITHUB_ENV
           fi
       - name: "Running the Cliq Integration"
         id: send-message
