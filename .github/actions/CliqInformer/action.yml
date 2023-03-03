@@ -113,7 +113,6 @@ runs:
         id: action-finder
         shell: bash
         run: |
-          echo "CLIQ_CHANNEL_LINK=${{ inputs.channel-endpoint }}" >> GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
             echo "BRANCH_RULE=${{ github.event.rule.name }}" >> $GITHUB_ENV
@@ -275,10 +274,10 @@ runs:
           CONNECTOR=$GITHUB_ACTION_PATH/src/CliqInformer.java
           if ${{ env.message != '' }}
           then
-            $JAVA $CONNECTOR
+            $JAVA $CONNECTOR "${{ inputs.channel-endpoint }}"
           elif ${{ env.message == '' && inputs.set-message-if-none }}
           then
-            $JAVA $CONNECTOR
+            $JAVA $CONNECTOR "${{ inputs.channel-endpoint }}"
           fi
       - name: "Displaying Output"
         id: display-output

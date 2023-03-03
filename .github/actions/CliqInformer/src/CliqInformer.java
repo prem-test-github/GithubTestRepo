@@ -33,7 +33,7 @@ public class CliqInformer {
 			String message;
 			String CustomMessage;
 			String ServerURL = "https://www.github.com/";
-			String CliqChannelLink = (String) System.getenv("CLIQ_CHANNEL_LINK").toString();
+			String CliqChannelLink = args[0];
 			if(CliqChannelLink.contains("message") && CliqChannelLink.contains("https://cliq.zoho") && CliqChannelLink.contains("/api/v2/") && CliqChannelLink.contains("?zapikey="))
 			  INVALID_ENDPOINT_ERROR = false;
 			CustomMessage = System.getenv("CUSTOM_MESSAGE");
