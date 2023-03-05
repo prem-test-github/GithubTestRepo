@@ -213,9 +213,11 @@ runs:
             echo "message=${{inputs.issues-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'label' }}
           then
+            echo "LABEL_NAME=${{ github.event.label.name }}" >> $GITHUB_ENV
             echo "message=${{inputs.label-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'milestone' }}
           then
+            echo "MILESTONE=${{ github.event.meilestone.title }}" >> $GITHUB_ENV
             echo "message=${{inputs.milestone-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'page_build' }}
           then
