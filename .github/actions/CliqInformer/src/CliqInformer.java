@@ -381,11 +381,12 @@ public class CliqInformer {
 					else if(Event.equals("Milestone"))
 					{
 						String Milestoner = (String) System.getenv("GITHUB_ACTOR");
-						String MilestoneName = (String) System.getenv("MILESTONE_NAME");
+						String MilestoneName = (String) System.getenv("MILESTONE");
+						String MilestoneURL = (String) System.getenv("MILESTONE_URL");
 						String NewWord = new String();
 						if(Action.equals("created"))
 							NewWord = "new ";
-						message = "[" + Milestoner + "](" + ServerURL + Milestoner + ") has " + Action + " a " + NewWord + "milestone - " + MilestoneName;
+						message = "[" + Milestoner + "](" + ServerURL + Milestoner + ") has " + Action + " a " + NewWord + "milestone - [" + MilestoneName + "](" + MilestoneURL +")";
 					}
 					else if(Event.equals("Page Build"))
 					{
