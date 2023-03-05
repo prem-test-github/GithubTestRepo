@@ -333,7 +333,7 @@ public class CliqInformer {
 						String Issuer = (String) System.getenv("GITHUB_ACTOR");
 						String IssueType = (String) System.getenv("ISSUE_TYPE");
 						String IssueName = (String) System.getenv("ISSUE_TITLE");
-						IssueName = IssueName + (String) System.getenv("ISSUE_NUMBER");
+						IssueName = IssueName + " #" +  (String) System.getenv("ISSUE_NUMBER");
 						String IssueURL = (String) System.getenv("ISSUE_URL");
 						String IssueComment = (String) System.getenv("ISSUE_COMMENT");
 						if(IssueType.equals("ISSUE"))

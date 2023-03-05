@@ -187,8 +187,8 @@ runs:
             echo "message=${{inputs.issue-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' }}
           then
-            echo "ISSUE_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
-            echo "ISSUE_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+            echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
             echo "ISSUE_URL=${{ github.event.comment.html_url }}" >> $GITHUB_ENV
             echo "ISSUE_COMMENT=${{ github.event.comment.body }}" >> $GITHUB_ENV
             echo "ISSUE_TYPE=PULL_REQUEST" >> $GITHUB_ENV
