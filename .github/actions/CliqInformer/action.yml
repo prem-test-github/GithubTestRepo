@@ -154,7 +154,7 @@ runs:
             echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
             if ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then
-              echo "LABEL_NAME={{ github.event.label.name }}" >> $GITHUB_ENV
+              echo "LABEL_NAME=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'transferred' }}
             then
               echo "NEW_REPOSITORY=${{ github.event.changes.new_repository.full_name }}" >> $GITHUB_ENV
