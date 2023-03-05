@@ -284,12 +284,12 @@ public class CliqInformer {
 						else if(Action.equals("assigned"))
 						{
 							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
-							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has assigned the issue [" + IssueName + "](" + IssueURL + ") to a [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has assigned the issue [" + IssueName + "](" + IssueURL + ") to [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
 						}
 						else if(Action.equals("unassigned"))
 						{
 							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
-							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has unassigned the issue [" + IssueName + "](" + IssueURL + ") from a [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";	
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has unassigned the issue [" + IssueName + "](" + IssueURL + ") from [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";	
 						}
 						else if(Action.equals("labeled"))
 						{
@@ -327,6 +327,35 @@ public class CliqInformer {
 							message = "[" + Issuer + "](" + ServerURL + Issuer + ") removed the milestone that was set for the issue - [" + IssueName + "](" + IssueURL + ")";
 						}
 						message = message + " \\n"  + IssueURL;
+					}
+					else if(Event.equals("Issue Comment"))
+					{
+						String Issuer = (String) System.getenv("GITHUB_ACTOR");
+						String IssueType = (String) System.getenv("ISSUE_TYPE");
+						String IssueName = (String) System.getenv("ISSUE_TITLE");
+						IssueName = IssueName + (String) System.getenv("ISSUE_NUMBER");
+						String IssueURL = (String) System.getenv("ISSUE_URL");
+						String IssueComment = (String) System.getenv("ISSUE_COMMENT");
+						if(IssueType == "ISSUE")
+						{
+							if(Action.equals("created"))
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has added a new comment to the issue - [" + IssueName + "](" + IssueURL + ")";
+							}
+							else if (Action.equals("deleted")) 
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has deleted a new comment to the issue - [" + IssueName + "](" + IssueURL + ")";
+							}
+							else if(Action.equals("edited"))
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has edited a comment made to the issue - [" + IssueName + "](" + IssueURL + ")";
+							}
+							message = message + " \\n" + IssueURL
+						}
+						else if(IssueType == "PULL_REQUEST")
+						{
+							
+						}
 					}
 					else if(Event.equals("Label"))
 					{
