@@ -386,6 +386,8 @@ public class CliqInformer {
 						String NewWord = new String();
 						if(Action.equals("created"))
 							NewWord = "new ";
+						else if(Action.equals("deleted"))
+							MilestoneURL = RepositoryURL + "/milestones";
 						message = "[" + Milestoner + "](" + ServerURL + Milestoner + ") has " + Action + " a " + NewWord + "milestone - [" + MilestoneName + "](" + MilestoneURL +")";
 					}
 					else if(Event.equals("Page Build"))
