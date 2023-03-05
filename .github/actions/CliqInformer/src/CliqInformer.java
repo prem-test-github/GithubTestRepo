@@ -143,7 +143,7 @@ public class CliqInformer {
 					    DeploymentURL = DeploymentURL.replace("api","www");
 					    DeploymentURL = DeploymentURL.replace("/repos","");
 						String Status = (String) System.getenv("STATUS");
-						Status = Status.replace("-"," ")
+						Status = Status.replace("-"," ");
 						message = "The status of the deployment [" + DeploymentEnv + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
 						message = message + " \\n" + RepositoryURL;
 					}
