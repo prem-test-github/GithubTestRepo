@@ -193,13 +193,13 @@ runs:
             echo "${{ toJSON(github.event) }}"
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
-              echo "ASSIGNED_USER=${{ github.event.issue.assignee.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_USER=${{ github.event.issue.assignee.login }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then 
-              echo "ASSIGNED_LABEL=${{ github.event.issue.label.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'milestoned' }}
             then
-              echo "MILESTONE=${{ github.event.issue.milestone.name }}" >> $GITHUB_ENV
+              echo "MILESTONE=${{ github.event.milestone.title }}" >> $GITHUB_ENV
             fi
             echo "message=${{inputs.issues-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'label' }}
@@ -246,13 +246,13 @@ runs:
             echo "message=${{inputs.pull-request-review-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_target' }}
           then
-            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
-            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-            echo "PULL_REQUEST_URL=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request_target.title }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request_target.number }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_URL=${{ github.event.pull_request_target.html_url }}" >> $GITHUB_ENV
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
               echo "ASSIGNED_USER=${{ github.event.assignee.name }}" >> $GITHUB_ENV
-            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabelled' }}
+            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then 
               echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
