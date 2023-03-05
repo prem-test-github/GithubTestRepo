@@ -179,11 +179,11 @@ runs:
             echo "message=${{inputs.gollum-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' && !github.event.issue.pull_request }}
           then
-            echo "PR_TITLE=${{ github.event.issue.title}}" >> $GITHUB_ENV
-            echo "PR_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
-            echo "$PR_URL=${{ github.event.comment.html_url }}" >> $GITHUB_ENV
-            echo "$PR_COMMENT=${{ github.event.comment.body }}" >> $GITHUB_ENV
-            echo "$ISSUE_TYPE=ISSUE" >> $GITHUB_ENV
+            echo "ISSUE_TITLE=${{ github.event.issue.title}}" >> $GITHUB_ENV
+            echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+            echo "ISSUE_URL=${{ github.event.comment.html_url }}" >> $GITHUB_ENV
+            echo "ISSUE_COMMENT=${{ github.event.comment.body }}" >> $GITHUB_ENV
+            echo "ISSUE_TYPE=ISSUE" >> $GITHUB_ENV
             echo "message=${{inputs.issue-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' }}
           then
