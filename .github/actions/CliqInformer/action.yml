@@ -193,7 +193,7 @@ runs:
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
               echo "ASSIGNED_USER=${{ github.event.assignee.name }}" >> $GITHUB_ENV
-            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabelled' }}
+            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then 
               echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}

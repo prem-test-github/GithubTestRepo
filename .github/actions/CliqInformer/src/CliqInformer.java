@@ -319,12 +319,12 @@ public class CliqInformer {
 						}
 						else if(Action.equals("milestoned"))
 						{
-							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has set a milestone for the issue - [" + IssueName + "](" + IssueURL + ")";
+							String Milestone = (String) System.getenv("MILESTONE");
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has set a milestone for the issue - [" + IssueName + "](" + IssueURL + ") with " + Milestone;
 						}
 						else if(Action.equals("demilestoned"))
 						{
-							String Milestone = (String) System.getenv("MILESTONE");
-							message = "[" + Issuer + "](" + ServerURL + Issuer + ") removed the milestone that was set for the issue - [" + IssueName + "](" + IssueURL + ") with " + Milestone;
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") removed the milestone that was set for the issue - [" + IssueName + "](" + IssueURL + ")";
 						}
 						message = message + " \\n"  + IssueURL;
 					}
