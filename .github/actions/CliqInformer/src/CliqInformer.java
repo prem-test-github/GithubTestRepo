@@ -326,6 +326,7 @@ public class CliqInformer {
 							String Milestone = (String) System.getenv("MILESTONE");
 							message = "[" + Issuer + "](" + ServerURL + Issuer + ") removed the milestone that was set for the issue - [" + IssueName + "](" + IssueURL + ") with " + Milestone;
 						}
+						message = message + " \\n"  + IssueURL;
 					}
 					else if(Event.equals("Label"))
 					{
