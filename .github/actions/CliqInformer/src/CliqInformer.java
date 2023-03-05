@@ -247,12 +247,13 @@ public class CliqInformer {
 					{
 						String PageHandler = (String) System.getenv("GITHUB_ACTOR");
 						message = "A few changes has been made to the [Wiki pages](" + RepositoryURL + "/wiki) of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
+						message = message + " \\n" + RepositoryURL;
 					}
 					else if(Event.equals("Issues"))
 					{
 						String Issuer= (String) System.getenv("GITHUB_ACTOR");
 						String IssueName = (String) System.getenv("ISSUE_TITLE");
-						IssueName = IssueName + " " + System.getenv("ISSUE_NUMBER");
+						IssueName = IssueName + " #" + System.getenv("ISSUE_NUMBER");
 						String IssueURL = System.getenv("ISSUE_URL");
 						if(Action.equals("opened"))
 						{
@@ -358,7 +359,7 @@ public class CliqInformer {
 					{
 						String PullRequestOperator = (String) System.getenv("GITHUB_ACTOR");
 						String PullRequest = (String) System.getenv("PULL_REQUEST_TITLE");
-						PullRequest = PullRequest + " " + (String) System.getenv("PULL_REQUEST_NUMBER");
+						PullRequest = PullRequest + " #" + (String) System.getenv("PULL_REQUEST_NUMBER");
 						String PullRequestURL = (String) System.getenv("PULL_REQUEST_URL");
 
 						if(Action.equals("opened"))
