@@ -141,12 +141,12 @@ runs:
           elif ${{ github.event_name == 'deployment' }}
           then
             echo "DEPLOYMENT_ENV=${{ github.event.deployment.environment }}" >> $GITHUB_ENV
-            echo "DEPLOYMENT_URL=${{ github.repository.deployments_url }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_URL=${{ github.event.repository.deployments_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.deployment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment_status' }}
           then
-            echo "DEPLOYMENT_ENV=${{ github.deployment_status.environment }}" >> $GITHUB_ENV
-            echo "DEPLOYMENT_URL=${{ github.repository.deployments_url }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_ENV=${{ github.event.deployment_status.environment }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_URL=${{ github.event.repository.deployments_url }}" >> $GITHUB_ENV
             echo "STATUS=${{ github.event.deployment_status.state }}" >> $GITHUB_ENV
             echo "message=${{inputs.deployment-status-message}}" >> $GITHUB_ENV
           elif ${{github.event_name == 'discussion' }}
