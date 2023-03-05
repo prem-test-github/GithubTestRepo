@@ -187,6 +187,22 @@ runs:
             echo "message=$MESSAGE" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issues' }}
           then
+            echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+            echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+            echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_ENV
+            if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
+            then
+              echo "ASSIGNED_USER=${{ github.event.assignee.name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabelled' }}
+            then 
+              echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
+            then
+              echo "ASSIGNED_USER=${{ github.event.requested_reviewer.name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'milestoned' }}
+            then
+              echo "MILESTONE=${{ github.event.milestone.name }}" >> $GITHUB_ENV
+            fi
             echo "message=${{inputs.issues-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'label' }}
           then
@@ -215,6 +231,9 @@ runs:
             elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
             then
               echo "ASSIGNED_USER=${{ github.event.requested_reviewer.name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'milestoned' }}
+            then
+              echo "MILESTONE=${{ github.event.milestone.name }}" >> $GITHUB_ENV
             fi
             echo "message=${{inputs.pull-request-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_review' }}

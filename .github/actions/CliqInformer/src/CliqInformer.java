@@ -240,7 +240,7 @@ public class CliqInformer {
 						String ForkerURL = ServerURL + Forker;
 						String RepoOwnerURL = ServerURL + RepoOwner;
 						String ForkeeURL = ServerURL + Forkee;
-						message = "[" + Forker + "](" + ForkerURL + ") has forked [" + RepoOwner + "](" + RepoOwnerURL + ")'s [" + Repository + "](" + RepositoryURL + ") repository to [" + Actor + "](" + ActorURL + ")'s [" + Forkee + "](" + ForkeeURL + ") repository";
+						message = "[" + Forker + "](" + ForkerURL + ") has forked [" + RepoOwner + "](" + RepoOwnerURL + ") 's [" + Repository + "](" + RepositoryURL + ") repository to [" + Actor + "](" + ActorURL + ") 's [" + Forkee + "](" + ForkeeURL + ") repository";
 						message = message + " \\n" + ForkeeURL;
 					}
 					else if(Event.equals("Gollum"))
@@ -250,7 +250,81 @@ public class CliqInformer {
 					}
 					else if(Event.equals("Issues"))
 					{
-
+						String Issuer= (String) System.getenv("GITHUB_ACTOR");
+						String IssueName = (String) System.getenv("ISSUE_TITLE");
+						IssueName = IssueName + " " + System.getenv("ISSUE_NUMBER");
+						IssueURL = System.getenv("ISSUE_URL");
+						if(Action.equals("opened"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has created a new issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("closed"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has closed the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("edited"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has edited the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("reopened"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has reopened the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("deleted"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has deleted the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("transferred"))
+						{
+							String NewRepository = (String) System.getenv("NEW_REPOSITORY");
+							String NewRepositoryURL = ServerURL + NewRepository;
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has transferred the issue [" + IssueName + "](" + IssueURL + ") from [" + Repository + "](" + RepositoryURL + ") to [" + NewRepository + "](" + NewRepositoryURL + ")";
+						}
+						else if(Action.equals("assigned"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has assigned the issue [" + IssueName + "](" + IssueURL + ") to a [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("unassigned"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has unassigned the issue [" + IssueName + "](" + IssueURL + ") from a [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";	
+						}
+						else if(Action.equals("labeled"))
+						{
+							String LabelName = (String) System.getenv("ASSIGNED_LABEL");
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has labelled the issue [" + IssueName + "](" + IssueURL + ") as " + LabelName;
+						}
+						else if(Action.equals("unlabeled"))
+						{
+							String LabelName = (String) System.getenv("ASSIGNED_LABEL");
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has removed the issue [" + IssueName + "](" + IssueURL + ") from the label " + LabelName;
+						}
+						else if(Action.equals("locked"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has locked the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("unlocked"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has unlocked the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("pinned"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has pinned the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("unpinned"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has unpinned the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("milestoned"))
+						{
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") has set a milestone for the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("demilestoned"))
+						{
+							String Milestone = (String) System.getenv("MILESTONE");
+							message = "[" + Issuer + "](" ServerURL + Issuer + ") removed the milestone that was set for the issue - [" + IssueName + "](" + IssueURL + ") with " + Milestone;
+						}
 					}
 					else if(Event.equals("Label"))
 					{
