@@ -193,16 +193,13 @@ runs:
             echo "${{ toJSON(github.event) }}"
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
-              echo "ASSIGNED_USER=${{ github.event.assignee.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_USER=${{ github.event.issue.assignee.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then 
-              echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
-            elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
-            then
-              echo "ASSIGNED_USER=${{ github.event.requested_reviewer.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_LABEL=${{ github.event.issue.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'milestoned' }}
             then
-              echo "MILESTONE=${{ github.event.milestone.name }}" >> $GITHUB_ENV
+              echo "MILESTONE=${{ github.event.issue.milestone.name }}" >> $GITHUB_ENV
             fi
             echo "message=${{inputs.issues-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'label' }}
