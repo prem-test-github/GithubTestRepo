@@ -336,7 +336,7 @@ public class CliqInformer {
 						IssueName = IssueName + (String) System.getenv("ISSUE_NUMBER");
 						String IssueURL = (String) System.getenv("ISSUE_URL");
 						String IssueComment = (String) System.getenv("ISSUE_COMMENT");
-						if(IssueType == "ISSUE")
+						if(IssueType.equals("ISSUE"))
 						{
 							if(Action.equals("created"))
 							{
@@ -352,7 +352,7 @@ public class CliqInformer {
 							}
 							message = message + " \\n" + IssueURL;
 						}
-						else if(IssueType == "PULL_REQUEST")
+						else if(IssueType.equals("PULL_REQUEST"))
 						{
 							if(Action.equals("created"))
 							{
