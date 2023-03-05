@@ -190,7 +190,6 @@ runs:
             echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
             echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
             echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_ENV
-            echo "${{ toJSON(github.event) }}"
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
               echo "ASSIGNED_USER=${{ github.event.issue.assignee.login }}" >> $GITHUB_ENV
