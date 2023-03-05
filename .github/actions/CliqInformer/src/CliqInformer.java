@@ -350,11 +350,23 @@ public class CliqInformer {
 							{
 								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has edited a comment made to the issue - [" + IssueName + "](" + IssueURL + ")";
 							}
-							message = message + " \\n" + IssueURL
+							message = message + " \\n" + IssueURL;
 						}
 						else if(IssueType == "PULL_REQUEST")
 						{
-							
+							if(Action.equals("created"))
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has added a new comment to the pull request [" + IssueName + "](" + IssueURL + ")";
+							}
+							else if (Action.equals("deleted")) 
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has deleted a new comment to the pull request [" + IssueName + "](" + IssueURL + ")";
+							}
+							else if(Action.equals("edited"))
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has edited a comment made to the pull request- [" + IssueName + "](" + IssueURL + ")";
+							}
+							message = message + " \\n" + IssueURL;
 						}
 					}
 					else if(Event.equals("Label"))
@@ -505,11 +517,12 @@ public class CliqInformer {
 						PullRequest = PullRequest + " " + (String) System.getenv("PULL_REQUEST_NUMBER");
 						String PullRequestURL = (String) System.getenv("PULL_REQUEST_URL");
 						if(Action.equals("created"))
-							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has created a new pull request review comment";
+							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has created a new [pull request review comment](" + PullRequestURL + ")";
 						else if(Action.equals("edited"))
-							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has edited a pull request review comment";
+							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has edited a [pull request review comment](" + PullRequestURL + ")";
 						else if(Action.equals("deleted"))
-							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has deleted a pull request review comment";
+							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has deleted a [pull request review comment](" + PullRequestURL + ")";
+						message = message + " \\n" + PullRequestURL;
 					}	
 					else if(Event.equals("Push"))
 					{
