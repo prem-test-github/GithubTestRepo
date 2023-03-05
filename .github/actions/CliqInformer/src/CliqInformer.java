@@ -143,7 +143,7 @@ public class CliqInformer {
 					    DeploymentURL = DeploymentURL.replace("api","www");
 					    DeploymentURL = DeploymentURL.replace("/repos","");
 						String Status = (String) System.getenv("STATUS");
-						Status = Status.replace("-"," ");
+						Status = Status.replace("_"," ");
 						message = "The status of the deployment [" + DeploymentEnv + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
 						message = message + " \\n" + RepositoryURL;
 					}
@@ -175,7 +175,7 @@ public class CliqInformer {
 						else if(Action.equals("labeled"))
 						{
 							String LabelName = (String) System.getenv("LABEL_NAME");
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has labelled the discussion [" + Discussion + "](" + DiscussionURL + ") as [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has labeled the discussion [" + Discussion + "](" + DiscussionURL + ") as [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
 						}
 						else if(Action.equals("unlabeled"))
 						{
