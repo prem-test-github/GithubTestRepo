@@ -138,6 +138,8 @@ public class CliqInformer {
 						String Deployer = (String) System.getenv("GITHUB_ACTOR");
 						String DeploymentEnv = (String) System.getenv("DEPLOYMENT_ENV");
 						String DeploymentURL = (String) System.getenv("DEPLOYMENT_URL");
+					    DeploymentURL = DeploymentURL.replace("api","www");
+					    DeploymentURL = DeploymentURL.replace("/repos","");
 						String Status = (String) System.getenv("STATUS").replace("-"," ");
 						message = "The status of the deployment [" + DeploymentEnv + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
 						message = message + " \\n" + DeploymentURL;
