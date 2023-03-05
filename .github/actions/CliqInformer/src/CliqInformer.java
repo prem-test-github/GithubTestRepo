@@ -130,8 +130,10 @@ public class CliqInformer {
 						String Deployer = (String) System.getenv("GITHUB_ACTOR");
 						String DeploymentEnv = (String) System.getenv("DEPLOYMENT_ENV");
 						String DeploymentURL = (String) System.getenv("DEPLOYMENT_URL");
+					    DeploymentURL = DeploymentURL.replace("api","www");
+					    DeploymentURL = DeploymentURL.replace("/repos","");
 						message = "A new deployment - " + DeploymentEnv + " - has been created for the repository - [" + Repository + "](" + RepositoryURL + ")";
-						message = message + " \\n" + DeploymentURL;
+						message = message + " \\n" + RepositoryURL;
 					}
 					else if(Event.equals("Deployment Status"))
 					{
@@ -140,9 +142,10 @@ public class CliqInformer {
 						String DeploymentURL = (String) System.getenv("DEPLOYMENT_URL");
 					    DeploymentURL = DeploymentURL.replace("api","www");
 					    DeploymentURL = DeploymentURL.replace("/repos","");
-						String Status = (String) System.getenv("STATUS").replace("-"," ");
+						String Status = (String) System.getenv("STATUS");
+						Status = Status.replace("-"," ")
 						message = "The status of the deployment [" + DeploymentEnv + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
-						message = message + " \\n" + DeploymentURL;
+						message = message + " \\n" + RepositoryURL;
 					}
 					else if(Event.equals("Discussion"))
 					{

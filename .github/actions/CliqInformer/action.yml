@@ -113,7 +113,6 @@ runs:
         id: action-finder
         shell: bash
         run: |
-          echo "${{ toJSON(github) }}"
           echo "ACTION=${{ github.event.action }}" >> $GITHUB_ENV
           if ${{ github.event_name == 'branch_protection_rule' }}
           then
@@ -153,7 +152,7 @@ runs:
           then
             echo "DISCUSSION=${{ github.event.discussion.title }}" >> $GITHUB_ENV
             echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
-            if ${{ github.event.action == 'labelled' || github.event.action == 'unlabelled' }}
+            if ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then
               echo "LABEL_NAME={{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'transferred' }}
