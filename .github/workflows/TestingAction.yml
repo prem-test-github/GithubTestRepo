@@ -30,8 +30,6 @@ on:
     # types : [created , edited , deleted]
   label:
     # types : [created , edited , deleted]
-  merge_group:
-    # types : [checks_requested]
   milestone:
     # types : [created , closed , opened , edited , deleted]
   page_build:
@@ -73,10 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/CliqInformer
+      - uses: prembala1710/CliqInformer@v0.0.2
         with:
           channel-endpoint: ${{ secrets.ENDPOINT }}
-          #branch-protection-rule-message: 'Security Update ​:Security:\n (event) is (action) by (me) at (repo) under (ref)'
+          #branch-protection-rule-message: 'Security Update :Security:\n (event) is (action) by (me) at (repo) under (ref)'
           #check-run-message: 'Check Run Status :server:\n (event) is (action) by (me) at (repo) under (ref)'
           #check-suite-message: 'Check Suite Status :server:\n (event) is (action) by (me) at (repo) under (ref)'
           #create-message: 'Creation :task:\n A (event) has occured'
