@@ -234,7 +234,7 @@ runs:
             echo "PULL_REQUEST_URL=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
-              echo "ASSIGNED_USER=${{ github.event.assignee.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_USER=${{ github.event.pull_request.assignee.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then 
               echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
