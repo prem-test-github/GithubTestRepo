@@ -88,7 +88,6 @@ jobs:
           #issue-message: 'Oops :surprise:\n A (event) is (action) by (me) at (repo) under (ref)'
           #issue-comment-message: 'Hey :awe:\n (workflow) (event) has been (action) by (me) at (repo) under (ref)'
           #label-message: 'Seems Like New Issues required New Labels :curious:\n A (event) has been (action) by (me)'
-          #merge-group-message: '(workflow) is triggered by (me) at (repo) under (ref)'
           #milestone-message: 'Goals need to be Changed as the Project Progresses :milestone:\n A (event) is (action)'
           #page-build-message: '(ref) Branch of (event) is changed by (me)'
           #project-message: 'Good Projects are planned well:report:\n A (event) is (action) by (me) at (ref)'
