@@ -235,7 +235,7 @@ runs:
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
               echo "ASSIGNED_USER=${{ github.event.assignee.name }}" >> $GITHUB_ENV
-            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabelled' }}
+            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then 
               echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
@@ -255,12 +255,15 @@ runs:
             echo "message=${{inputs.pull-request-review-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_review_comment' }}
           then
+            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> #GITHUB_ENV
+            echo "PULL_REQUEST_URL=${{github.event.pull_request.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.pull-request-review-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_target' }}
           then
-            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request_target.title }}" >> $GITHUB_ENV
-            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request_target.number }}" >> $GITHUB_ENV
-            echo "PULL_REQUEST_URL=${{ github.event.pull_request_target.html_url }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_URL=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
               echo "ASSIGNED_USER=${{ github.event.assignee.name }}" >> $GITHUB_ENV
