@@ -229,19 +229,18 @@ runs:
             echo "message=${{inputs.public-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request' }}
           then
-            echo "${{ toJSON(github.event) }}"
             echo "PULL_REQUEST_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
             echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
             echo "PULL_REQUEST_URL=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
-              echo "ASSIGNED_USER=${{ github.event.assignee.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_USER=${{ github.event.assignee.login s}}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then 
               echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
             then
-              echo "ASSIGNED_USER=${{ github.event.requested_reviewer.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_USER=${{ github.event.requested_reviewer.login }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'milestoned' }}
             then
               echo "MILESTONE=${{ github.event.milestone.name }}" >> $GITHUB_ENV
@@ -267,13 +266,13 @@ runs:
             echo "PULL_REQUEST_URL=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
             if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
             then
-              echo "ASSIGNED_USER=${{ github.event.pull_request.assignee.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_USER=${{ github.event.pull_request.assignee.login }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then 
               echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
             then
-              echo "ASSIGNED_USER=${{ github.event.requested_reviewer.name }}" >> $GITHUB_ENV
+              echo "ASSIGNED_USER=${{ github.event.requested_reviewer.login }}" >> $GITHUB_ENV
             fi
             echo "message=${{inputs.pull-request-target-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
