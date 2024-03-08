@@ -80,7 +80,7 @@ public class CliqInformer {
 						}
 						else if(Action.equals("deleted"))
 						{
-							message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has deleted an existing branch protection rule";
+							message = "[" + Branch_Manager + "](" + ServerURL + Branch_Manager + ") has deleted an existing branch protection rule - " + Rule;
 						}
 						else if(Action.equals("edited"))
 						{
@@ -128,17 +128,24 @@ public class CliqInformer {
 					else if(Event.equals("Deployment"))
 					{
 						String Deployer = (String) System.getenv("GITHUB_ACTOR");
+						String DeploymentEnv = (String) System.getenv("DEPLOYMENT_ENV");
 						String DeploymentURL = (String) System.getenv("DEPLOYMENT_URL");
-						message = "A new deployment has been created for the repository - [" + Repository + "](" + RepositoryURL + ")";
-						message = message + " \\n" + DeploymentURL;
+					    DeploymentURL = DeploymentURL.replace("api","www");
+					    DeploymentURL = DeploymentURL.replace("/repos","");
+						message = "A new deployment - " + DeploymentEnv + " - has been created for the repository - [" + Repository + "](" + RepositoryURL + ")";
+						message = message + " \\n" + RepositoryURL;
 					}
 					else if(Event.equals("Deployment Status"))
 					{
 						String Deployer = (String) System.getenv("GITHUB_ACTOR");
+						String DeploymentEnv = (String) System.getenv("DEPLOYMENT_ENV");
 						String DeploymentURL = (String) System.getenv("DEPLOYMENT_URL");
+					    DeploymentURL = DeploymentURL.replace("api","www");
+					    DeploymentURL = DeploymentURL.replace("/repos","");
 						String Status = (String) System.getenv("STATUS");
-						message = "The status of the deployment [" + DeploymentURL + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
-						message = message + " \\n" + DeploymentURL;
+						Status = Status.replace("_"," ");
+						message = "The status of the deployment [" + DeploymentEnv + "](" + DeploymentURL + ") associated with the [" + Repository + "](" + RepositoryURL + ") repository has been changed to " + Status;
+						message = message + " \\n" + RepositoryURL;
 					}
 					else if(Event.equals("Discussion"))
 					{
@@ -165,15 +172,15 @@ public class CliqInformer {
 						{
 							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has unpinned the discussion - [" + Discussion + "](" + DiscussionURL + ")";
 						}
-						else if(Action.equals("labelled"))
+						else if(Action.equals("labeled"))
 						{
 							String LabelName = (String) System.getenv("LABEL_NAME");
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has labelled the discussion [" + Discussion + "](" + DiscussionURL + "] as [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has labeled the discussion [" + Discussion + "](" + DiscussionURL + ") as [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
 						}
-						else if(Action.equals("unlabelled"))
+						else if(Action.equals("unlabeled"))
 						{
 							String LabelName = (String) System.getenv("LABEL_NAME");
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has removed the discussion [" + Discussion + "](" + DiscussionURL + "] from the label [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has removed the discussion [" + Discussion + "](" + DiscussionURL + ") from the label [" + LabelName + "](" + RepositoryURL+ "/discussions?discussions_q=label%3A" + LabelName + ")";
 						}
 						else if(Action.equals("locked"))
 						{
@@ -187,7 +194,7 @@ public class CliqInformer {
 						{
 							String NewRepository = (String) System.getenv("NEW_REPOSITORY");
 							String NewRepositoryURL = ServerURL + NewRepository;
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has transfered the discussion [" + Discussion + "](" + DiscussionURL + "] from [" + Repository + "](" + RepositoryURL + ") to [" + NewRepository + "](" + NewRepositoryURL + ")";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has transferred the discussion [" + Discussion + "](" + DiscussionURL + ") from [" + Repository + "](" + RepositoryURL + ") to [" + NewRepository + "](" + NewRepositoryURL + ")";
 						}
 						else if(Action.equals("answered"))
 						{
@@ -200,7 +207,7 @@ public class CliqInformer {
 						else if(Action.equals("category changed"))
 						{
 							String CategoryName = (String) System.getenv("CATEGORY_NAME");
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has changed and added the discussion [" + Discussion + "](" + DiscussionURL + "] under the [" + CategoryName + "](" + RepositoryURL + "/discussions/categories/" + CategoryName + ") category";
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has changed and added the discussion [" + Discussion + "](" + DiscussionURL + ") under the [" + CategoryName + "](" + RepositoryURL + "/discussions/categories/" + CategoryName + ") category";
 						}
 						message = message + " \\n" + DiscussionURL;
 					}
@@ -213,7 +220,7 @@ public class CliqInformer {
 						String CommentURL = (String) System.getenv("COMMENT_URL");
 						if(Action.equals("created"))
 						{
-							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has added a new [comment](" + CommentURL + ") to the discussion - [" + DiscussionTitle + "](" + DiscussionURL + ")\\n" + DiscussionComment ;
+							message = "[" + Discusser + "](" + ServerURL + Discusser + ") has added a new [comment](" + CommentURL + ") to the discussion - [" + DiscussionTitle + "](" + DiscussionURL + ")";
 						}
 						else if(Action.equals("edited"))
 						{
@@ -229,17 +236,159 @@ public class CliqInformer {
 					{
 						String Forker = (String) System.getenv("GITHUB_ACTOR");
 						String Forkee = (String) System.getenv("NEW_REPOSITORY");
-						String RepoOwner = (String) System.getenv("GITHUB_REPO_OWNER");
+						String RepoOwner = (String) System.getenv("GITHUB_REPOSITORY_OWNER");
 						String ForkerURL = ServerURL + Forker;
 						String RepoOwnerURL = ServerURL + RepoOwner;
 						String ForkeeURL = ServerURL + Forkee;
-						message = "[" + Forker + "](" + ForkerURL + ") has forked [" + RepoOwner + "](" + RepoOwnerURL + ")'s [" + Repository + "](" + RepositoryURL + ") repository to [" + Actor + "](" + ActorURL + ")'s [" + Forkee + "](" + ForkeeURL + ") repository";
+						message = "[" + Forker + "](" + ForkerURL + ") has forked [" + RepoOwner + "](" + RepoOwnerURL + ") 's [" + Repository + "](" + RepositoryURL + ") repository to [" + Actor + "](" + ActorURL + ") 's [" + Forkee + "](" + ForkeeURL + ") repository";
 						message = message + " \\n" + ForkeeURL;
 					}
 					else if(Event.equals("Gollum"))
 					{
 						String PageHandler = (String) System.getenv("GITHUB_ACTOR");
-						message = "A few changes has been made to the Wiki pages of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
+						message = "A few changes has been made to the [Wiki pages](" + RepositoryURL + "/wiki) of [" + Repository + "](" + RepositoryURL + ") by " + "[" + PageHandler + "](" + ServerURL + PageHandler + ")";
+						message = message + " \\n" + RepositoryURL;
+					}
+					else if(Event.equals("Issues"))
+					{
+						String Issuer= (String) System.getenv("GITHUB_ACTOR");
+						String IssueName = (String) System.getenv("ISSUE_TITLE");
+						IssueName = IssueName + " #" + System.getenv("ISSUE_NUMBER");
+						String IssueURL = System.getenv("ISSUE_URL");
+						if(Action.equals("opened"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has created a new issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("closed"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has closed the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("edited"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has edited the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("reopened"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has reopened the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("deleted"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has deleted the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("transferred"))
+						{
+							String NewRepository = (String) System.getenv("NEW_REPOSITORY");
+							String NewRepositoryURL = ServerURL + NewRepository;
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has transferred the issue [" + IssueName + "](" + IssueURL + ") from [" + Repository + "](" + RepositoryURL + ") to [" + NewRepository + "](" + NewRepositoryURL + ")";
+						}
+						else if(Action.equals("assigned"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has assigned the issue [" + IssueName + "](" + IssueURL + ") to [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("unassigned"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has unassigned the issue [" + IssueName + "](" + IssueURL + ") from [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";	
+						}
+						else if(Action.equals("labeled"))
+						{
+							String LabelName = (String) System.getenv("ASSIGNED_LABEL");
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has labelled the issue [" + IssueName + "](" + IssueURL + ") as " + LabelName;
+						}
+						else if(Action.equals("unlabeled"))
+						{
+							String LabelName = (String) System.getenv("ASSIGNED_LABEL");
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has removed the issue [" + IssueName + "](" + IssueURL + ") from the label " + LabelName;
+						}
+						else if(Action.equals("locked"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has locked the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("unlocked"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has unlocked the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("pinned"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has pinned the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("unpinned"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has unpinned the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						else if(Action.equals("milestoned"))
+						{
+							String Milestone = (String) System.getenv("MILESTONE");
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") has set a milestone for the issue - [" + IssueName + "](" + IssueURL + ") with " + Milestone;
+						}
+						else if(Action.equals("demilestoned"))
+						{
+							message = "[" + Issuer + "](" + ServerURL + Issuer + ") removed the milestone that was set for the issue - [" + IssueName + "](" + IssueURL + ")";
+						}
+						message = message + " \\n"  + IssueURL;
+					}
+					else if(Event.equals("Issue Comment"))
+					{
+						String Issuer = (String) System.getenv("GITHUB_ACTOR");
+						String IssueType = (String) System.getenv("ISSUE_TYPE");
+						String IssueName = (String) System.getenv("ISSUE_TITLE");
+						IssueName = IssueName + " #" +  (String) System.getenv("ISSUE_NUMBER");
+						String IssueURL = (String) System.getenv("ISSUE_URL");
+						String IssueComment = (String) System.getenv("ISSUE_COMMENT");
+						if(IssueType.equals("ISSUE"))
+						{
+							if(Action.equals("created"))
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has added a new comment to the issue - [" + IssueName + "](" + IssueURL + ")";
+							}
+							else if (Action.equals("deleted")) 
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has deleted a new comment to the issue - [" + IssueName + "](" + IssueURL + ")";
+							}
+							else if(Action.equals("edited"))
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has edited a comment made to the issue - [" + IssueName + "](" + IssueURL + ")";
+							}
+							message = message + " \\n" + IssueURL;
+						}
+						else if(IssueType.equals("PULL_REQUEST"))
+						{
+							if(Action.equals("created"))
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has added a new comment to the pull request [" + IssueName + "](" + IssueURL + ")";
+							}
+							else if (Action.equals("deleted")) 
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has deleted a new comment to the pull request [" + IssueName + "](" + IssueURL + ")";
+							}
+							else if(Action.equals("edited"))
+							{
+								message = "[" + Issuer + "](" + ServerURL + Issuer + ") has edited a comment made to the pull request- [" + IssueName + "](" + IssueURL + ")";
+							}
+							message = message + " \\n" + IssueURL;
+						}
+					}
+					else if(Event.equals("Label"))
+					{
+						String Labeler = (String) System.getenv("GITHUB_ACTOR");
+						String LabelName = (String) System.getenv("LABEL_NAME");
+						String NewWord = new String();
+						if(Action.equals("created"))
+							NewWord = "new ";
+						message = "[" + Labeler + "](" + ServerURL + Labeler + ") has " + Action + " a " + NewWord + "label - " + LabelName + " \\n" + RepositoryURL + "/labels/" + LabelName;
+					}
+					else if(Event.equals("Milestone"))
+					{
+						String Milestoner = (String) System.getenv("GITHUB_ACTOR");
+						String MilestoneName = (String) System.getenv("MILESTONE");
+						String MilestoneURL = (String) System.getenv("MILESTONE_URL");
+						String NewWord = new String();
+						if(Action.equals("created"))
+							NewWord = "new ";
+						else if(Action.equals("deleted"))
+							MilestoneURL = RepositoryURL + "/milestones";
+						message = "[" + Milestoner + "](" + ServerURL + Milestoner + ") has " + Action + " a " + NewWord + "milestone - [" + MilestoneName + "](" + MilestoneURL +")";
 					}
 					else if(Event.equals("Page Build"))
 					{
@@ -251,6 +400,133 @@ public class CliqInformer {
 						String Publicizer = (String) System.getenv("GITHUB_ACTOR");
 						message = "The [" + Repository + "](" + RepositoryURL + ") repository has been made public by [" + Publicizer + "](" + ServerURL + Publicizer + ")";
 					}
+					else if(Event.equals("Pull Request") || Event.equals("Pull Request Target"))
+					{
+						String PullRequestOperator = (String) System.getenv("GITHUB_ACTOR");
+						String PullRequest = (String) System.getenv("PULL_REQUEST_TITLE");
+						PullRequest = PullRequest + " #" + (String) System.getenv("PULL_REQUEST_NUMBER");
+						String PullRequestURL = (String) System.getenv("PULL_REQUEST_URL");
+
+						if(Action.equals("opened"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has opened a new " + Event + " [" + PullRequest + "](" + PullRequestURL + ") for the repository [" + Repository + "](" + RepositoryURL + ")";
+						}
+						else if(Action.equals("edited"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has edited the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") attached with the repository [" + Repository + "](" + RepositoryURL + ")";
+						}
+						else if(Action.equals("reopened"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has reopened the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") for the repository [" + Repository + "](" + RepositoryURL + ")";
+						}
+						else if(Action.equals("assigned"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has assigned the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") to [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("unassigned"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has unassigned the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") from [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("labeled"))
+						{
+							String LabelName = (String) System.getenv("ASSIGNED_LABEL");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has labelled the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") as " + LabelName;
+						}
+						else if(Action.equals("unlabeled"))
+						{
+							String LabelName = (String) System.getenv("ASSIGNED_LABEL");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has removed the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") from the label " + LabelName;
+						}
+						else if(Action.equals("locked"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has locked the " + Event + " - [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						else if(Action.equals("unlocked"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has unlocked the " + Event + " - [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						else if(Action.equals("converted to draft"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has marked the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") as draft";
+						}
+						else if(Action.equals("ready for review"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has marked the " + Event + " [" + PullRequest + "](" + PullRequestURL + ") as ready for review";
+						}
+						else if(Action.equals("review requested"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has requested a review for [" + PullRequest + "](" + PullRequestURL + ") [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("review request removed"))
+						{
+							String AssignedUser = (String) System.getenv("ASSIGNED_USER");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has removed that review request for [" + PullRequest + "](" + PullRequestURL + ") assigned to [" + AssignedUser + "](" + ServerURL + AssignedUser + ")";
+						}
+						else if(Action.equals("auto merge enabled"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has enabled the auto merge option";
+						}
+						else if(Action.equals("auto merge disabled"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has disabled the auto merge option";
+						}
+						else if(Action.equals("synchronize"))
+						{
+							message = "New changes have been added to the " + Event + " - [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						else if(Action.equals("closed"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has closed the pull request " + PullRequest ;
+						}
+						else if(Action.equals("milestoned"))
+						{
+							String Milestone = (String) System.getenv("MILESTONE");
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has milestoned the pull request [" + PullRequest + "](" + PullRequestURL + ") with " + Milestone;
+						}
+						else if(Action.equals("demilestoned"))
+						{
+							message = "[" + PullRequestOperator + "](" + ServerURL + PullRequestOperator + ") has demilestoned the pull request [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						message = message + " \\n" + PullRequestURL;
+					}
+					else if(Event.equals("Pull Request Review"))
+					{
+						String Reviewer = (String) System.getenv("GITHUB_ACTOR");
+						String PullRequest = (String) System.getenv("PULL_REQUEST_TITLE");
+						PullRequest = PullRequest + " " + (String) System.getenv("PULL_REQUEST_NUMBER");
+						String PullRequestURL = (String) System.getenv("PULL_REQUEST_URL");
+						String PullRequestReviewURL = (String) System.getenv("PULL_REQUEST_REVIEW_URL");
+						if(Action.equals("submitted"))
+						{
+							message = "[" + Reviewer + "](" + ServerURL + Reviewer + ") has submitted a [review](" + PullRequestReviewURL + ") for the pull request [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						else if(Action.equals("dismissed"))
+						{
+							message = "[" + Reviewer + "](" + ServerURL + Reviewer + ") has dismissed a [review](" + PullRequestReviewURL + ") for the pull request [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						else if(Action.equals("edited"))
+						{
+							message = "[" + Reviewer + "](" + ServerURL + Reviewer + ") has edited the [review details](" + PullRequestReviewURL + ") for the pull request [" + PullRequest + "](" + PullRequestURL + ")";
+						}
+						message = message + "\\n" + PullRequestReviewURL;
+					}
+					else if(Event.equals("Pull Request Review Comment"))
+					{
+						String Commentor = (String) System.getenv("GITHUB_ACTOR");
+						String PullRequest = (String) System.getenv("PULL_REQUEST_TITLE");
+						PullRequest = PullRequest + " " + (String) System.getenv("PULL_REQUEST_NUMBER");
+						String PullRequestURL = (String) System.getenv("PULL_REQUEST_URL");
+						if(Action.equals("created"))
+							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has created a new [pull request review comment](" + PullRequestURL + ")";
+						else if(Action.equals("edited"))
+							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has edited a [pull request review comment](" + PullRequestURL + ")";
+						else if(Action.equals("deleted"))
+							message = "[" + Commentor + "](" + ServerURL + Commentor + ") has deleted a [pull request review comment](" + PullRequestURL + ")";
+						message = message + " \\n" + PullRequestURL;
+					}	
 					else if(Event.equals("Push"))
 					{
 						String Pusher = (String) System.getenv("GITHUB_ACTOR");
