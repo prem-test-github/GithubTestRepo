@@ -76,7 +76,7 @@ jobs:
       - uses: ./.github/actions/CliqInformer
         with:
           channel-endpoint: ${{ secrets.ENDPOINT }}
-          #branch-protection-rule-message: 'Security Update ​:Security:\n (event) is (action) by (me) at (repo) under (ref)'
+          #branch-protection-rule-message: 'Security Update :Security:\n (event) is (action) by (me) at (repo) under (ref)'
           #check-run-message: 'Check Run Status :server:\n (event) is (action) by (me) at (repo) under (ref)'
           #check-suite-message: 'Check Suite Status :server:\n (event) is (action) by (me) at (repo) under (ref)'
           #create-message: 'Creation :task:\n A (event) has occured'
