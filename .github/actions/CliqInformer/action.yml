@@ -139,23 +139,25 @@ runs:
             echo "message=${{inputs.delete-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment' }}
           then
-            echo "DEPLOYMENT_URL=${{ github.event.deployment.url }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_ENV=${{ github.event.deployment.environment }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_URL=${{ github.event.repository.deployments_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.deployment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'deployment_status' }}
           then
-            echo "DEPLOYMENT_URL=${{ github.event.deployment_status.deployment_url }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_ENV=${{ github.event.deployment_status.environment }}" >> $GITHUB_ENV
+            echo "DEPLOYMENT_URL=${{ github.event.repository.deployments_url }}" >> $GITHUB_ENV
             echo "STATUS=${{ github.event.deployment_status.state }}" >> $GITHUB_ENV
             echo "message=${{inputs.deployment-status-message}}" >> $GITHUB_ENV
           elif ${{github.event_name == 'discussion' }}
           then
             echo "DISCUSSION=${{ github.event.discussion.title }}" >> $GITHUB_ENV
             echo "DISCUSSION_URL=${{ github.event.discussion.html_url }}" >> $GITHUB_ENV
-            if ${{ github.event.action == 'labelled' || github.event.action == 'unlabelled' }}
+            if ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
             then
-              echo "LABEL_NAME={{ github.event.label.name }}" >> $GITHUB_ENV
+              echo "LABEL_NAME=${{ github.event.label.name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'transferred' }}
             then
-              echo "NEW_REPOSITORY=${{ github.event.new_repository.full_name }}" >> $GITHUB_ENV
+              echo "NEW_REPOSITORY=${{ github.event.changes.new_repository.full_name }}" >> $GITHUB_ENV
             elif ${{ github.event.action == 'category_changed' }}
             then
               echo "CATEGORY_NAME=${{ github.event.discussion.category.name }}" >> $GITHUB_ENV;
@@ -177,23 +179,46 @@ runs:
             echo "message=${{inputs.gollum-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' && !github.event.issue.pull_request }}
           then
+            echo "ISSUE_TITLE=${{ github.event.issue.title}}" >> $GITHUB_ENV
+            echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+            echo "ISSUE_URL=${{ github.event.comment.html_url }}" >> $GITHUB_ENV
+            echo "ISSUE_COMMENT=${{ github.event.comment.body }}" >> $GITHUB_ENV
+            echo "ISSUE_TYPE=ISSUE" >> $GITHUB_ENV
             echo "message=${{inputs.issue-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issue_comment' }}
           then
+            echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+            echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+            echo "ISSUE_URL=${{ github.event.comment.html_url }}" >> $GITHUB_ENV
+            echo "ISSUE_COMMENT=${{ github.event.comment.body }}" >> $GITHUB_ENV
+            echo "ISSUE_TYPE=PULL_REQUEST" >> $GITHUB_ENV
             MESSAGE='${{inputs.pull-request-comment-message}}'
             MESSAGE=${MESSAGE//(event)/"Pull Request Comment"}
             echo "message=$MESSAGE" >> $GITHUB_ENV
           elif ${{ github.event_name == 'issues' }}
           then
+            echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+            echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+            echo "ISSUE_URL=${{ github.event.issue.html_url }}" >> $GITHUB_ENV
+            if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
+            then
+              echo "ASSIGNED_USER=${{ github.event.issue.assignee.login }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
+            then 
+              echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'milestoned' }}
+            then
+              echo "MILESTONE=${{ github.event.milestone.title }}" >> $GITHUB_ENV
+            fi
             echo "message=${{inputs.issues-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'label' }}
           then
+            echo "LABEL_NAME=${{ github.event.label.name }}" >> $GITHUB_ENV
             echo "message=${{inputs.label-message}}" >> $GITHUB_ENV
-          elif ${{ github.event_name == 'merge_group' }}
-          then
-            echo "message=${{inputs.merge-group-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'milestone' }}
           then
+            echo "MILESTONE=${{ github.event.milestone.title }}" >> $GITHUB_ENV
+            echo "MILESTONE_URL=${{ github.event.milestone.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.milestone-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'page_build' }}
           then
@@ -204,15 +229,51 @@ runs:
             echo "message=${{inputs.public-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request' }}
           then
+            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_URL=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
+            if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
+            then
+              echo "ASSIGNED_USER=${{ github.event.assignee.login }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
+            then 
+              echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
+            then
+              echo "ASSIGNED_USER=${{ github.event.requested_reviewer.login }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'milestoned' }}
+            then
+              echo "MILESTONE=${{ github.event.milestone.name }}" >> $GITHUB_ENV
+            fi
             echo "message=${{inputs.pull-request-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_review' }}
           then
+            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_URL=${{ github.event.review.pull_request_url }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_REVIEW_URL=${{github.event.review.html_url}}" >> $GITHUB_ENV
             echo "message=${{inputs.pull-request-review-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_review_comment' }}
           then
+            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_URL=${{github.event.pull_request.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.pull-request-review-comment-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'pull_request_target' }}
           then
+            echo "PULL_REQUEST_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "PULL_REQUEST_URL=${{ github.event.pull_request.html_url }}" >> $GITHUB_ENV
+            if ${{github.event.action == 'assigned' || github.event.action == 'unassigned' }}
+            then
+              echo "ASSIGNED_USER=${{ github.event.pull_request.assignee.login }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'labeled' || github.event.action == 'unlabeled' }}
+            then 
+              echo "ASSIGNED_LABEL=${{ github.event.label.name }}" >> $GITHUB_ENV
+            elif ${{ github.event.action == 'review_requested' || github.event.action == 'review_request_removed' }}
+            then
+              echo "ASSIGNED_USER=${{ github.event.requested_reviewer.login }}" >> $GITHUB_ENV
+            fi
             echo "message=${{inputs.pull-request-target-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'push' }}
           then
@@ -224,13 +285,13 @@ runs:
             echo "REGISTRY_PACKAGE_NAME=${{ github.event.registry_package.name }}" >> $GITHUB_ENV
             echo "REGISTRY_PACKAGE_VERSION=${{ github.event.registry_package.package_version.name }}" >> $GITHUB_ENV
             echo "REGISTRY_PACKAGE_TYPE=${{github.event.registry_package.package_type }}" >> $GITHUB_ENV
-            echo "REGISTRY_PACKAGE_URL=${{github.event.registry_package.package_html_url }}" >> $GITHUB_ENV
+            echo "REGISTRY_PACKAGE_URL=${{github.event.registry_package.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.registry-package-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'release' }}
           then
             echo "RELEASE_NAME=${{ github.event.release.name }}" >> $GITHUB_ENV
             echo "RELEASE_TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
-            echo "RELEASE_HTML=${{ github.event.release.html_url }}" >> $GITHUB_ENV
+            echo "RELEASE_URL=${{ github.event.release.html_url }}" >> $GITHUB_ENV
             echo "message=${{inputs.release-message}}" >> $GITHUB_ENV
           elif ${{ github.event_name == 'repository_dispatch' }}
           then
